@@ -608,37 +608,43 @@
           </el-row>
 
           <el-row>
-            <el-form-item label="经费来源">
-              <el-col :span="12">
-                <el-checkbox-group v-model="form.temp">
-                  <el-checkbox
-                    label="政府"
-                    name="temp"
-                    class="apply"
-                    @click="fundingSource(1)"
-                  ></el-checkbox>
-                  <el-checkbox
-                    label="基金会"
-                    name="temp"
-                    class="apply"
-                    @click="fundingSource(2)"
-                  ></el-checkbox>
-                  <el-checkbox
-                    label="国际组织"
-                    name="temp"
-                    class="apply"
-                    @click="fundingSource(3)"
-                  ></el-checkbox>
-                  <el-checkbox
-                    label="其他"
-                    name="temp"
-                    class="apply"
-                    @click="fundingSource(4)"
-                  ></el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-            </el-form-item>
-          </el-row>
+          <el-form-item label="经费来源(单选)">
+            <el-col :span="12">
+              <el-checkbox-group v-model="form.temp">
+                <el-checkbox
+                  label="政府"
+                  name="temp"
+                  class="apply"
+                  @click="fundingSource(0)"
+                ></el-checkbox>
+                <el-checkbox
+                  label="基金会"
+                  name="temp"
+                  class="apply"
+                  @click="fundingSource(1)"
+                ></el-checkbox>
+                <el-checkbox
+                  label="公司"
+                  name="temp"
+                  class="apply"
+                  @click="fundingSource(2)"
+                ></el-checkbox>
+                <el-checkbox
+                  label="国际组织"
+                  name="temp"
+                  class="apply"
+                  @click="fundingSource(3)"
+                ></el-checkbox>
+                <el-checkbox
+                  label="其他"
+                  name="temp"
+                  class="apply"
+                  @click="fundingSource(4)"
+                ></el-checkbox>
+              </el-checkbox-group>
+            </el-col>
+          </el-form-item>
+        </el-row>
 
           <el-row>
             <el-form-item
@@ -896,6 +902,23 @@ export default {
       if (this.form.application_file == "") {
         this.$message.error("您忘记上传文件了!");
         return;
+      }
+      switch(this.form.temp[0]){
+        case '政府':
+          this.form.type=0
+          break;
+        case '基金会':
+          this.form.type=1
+          break;
+        case '公司':
+          this.form.type=2
+          break;
+        case '国际组织':
+          this.form.type=3
+          break;
+        case '其他':
+          this.form.type=4
+          break;
       }
       axios({
         method: "post",
