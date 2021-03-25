@@ -361,6 +361,7 @@ export default {
     handleSuccess(response, file, fileList) {
       //console.log(response.data);
       this.form.application_file = response.data;
+      console.log(this.form.application_file);
     },
     handleRemove(file, fileList) {
       //console.log(file, fileList);
