@@ -79,52 +79,59 @@
                   @click="download(props.row.applicationPdf)"
                   >下载PDF</el-button
                 >
-                <div v-if="props.row.status!='委员长终审'">
-                <el-button
-                  :disabled="props.row.executeInfo == ''"
-                  size="mini"
-                  type="primary"
-                  @click="download(props.row.executeInfo)"
-                  >下载执行情况表格</el-button
-                >
-                <el-button
-                  :disabled="props.row.summary == ''"
-                  size="mini"
-                  type="primary"
-                  @click="download(props.row.summary)"
-                  >下载总结</el-button
-                >
-                   <el-button
-                  :disabled="props.row.trackFile == ''"
-                  size="mini"
-                  type="primary"
-                  @click="download(props.row.trackFile)"
-                  >下载后跟踪文件</el-button
-                >
-                </div>            
+                <div v-if="props.row.status != '委员长终审'">
+                  <el-button
+                    :disabled="props.row.executeInfo == ''"
+                    size="mini"
+                    type="primary"
+                    @click="download(props.row.executeInfo)"
+                    >下载执行情况表格</el-button
+                  >
+                  <el-button
+                    :disabled="props.row.summary == ''"
+                    size="mini"
+                    type="primary"
+                    @click="download(props.row.summary)"
+                    >下载总结</el-button
+                  >
+                  <el-button
+                    :disabled="props.row.trackFile == ''"
+                    size="mini"
+                    type="primary"
+                    @click="download(props.row.trackFile)"
+                    >下载后跟踪文件</el-button
+                  >
+                </div>
               </template>
             </el-form-item>
             <br />
-            <el-form-item label="" v-if="props.row.status=='执行情况表与总结待审核'||props.row.status=='执行情况表待审核'
-            ||props.row.status=='跟踪情况表待审核'||props.row.status=='伦理工作总结待审核'">
+            <el-form-item
+              label=""
+              v-if="
+                props.row.status == '执行情况表与总结待审核' ||
+                props.row.status == '执行情况表待审核' ||
+                props.row.status == '跟踪情况表待审核' ||
+                props.row.status == '伦理工作总结待审核'
+              "
+            >
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
-                    size="mini"
-                    type="success"
-                    @click="confirm(props.row.id, 1)"
-                    >批准</el-button
-                  >
+                  size="mini"
+                  type="success"
+                  @click="confirm(props.row.id, 1)"
+                  >批准</el-button
+                >
                 <el-button
-                    size="mini"
-                    type="danger"
-                    @click="confirm(props.row.id, -1)"
-                    >驳回</el-button
-                  >
+                  size="mini"
+                  type="danger"
+                  @click="confirm(props.row.id, -1)"
+                  >驳回</el-button
+                >
               </template>
             </el-form-item>
             <br />
-            <el-form-item label v-if='props.row.status=="委员长终审"'>
+            <el-form-item label v-if="props.row.status == '委员长终审'">
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
@@ -134,38 +141,44 @@
                   >批准</el-button
                 >
                 <el-button
-                    size="mini"
-                    type="warning"
-                    @click="confirmReject(props.row.id, 0)"
-                    >修改</el-button
-                  >
+                  size="mini"
+                  type="warning"
+                  @click="confirmReject(props.row.id, 0)"
+                  >修改</el-button
+                >
                 <el-button
-                    size="mini"
-                    type="danger"
-                    @click="confirmReject(props.row.id,-1)"
-                    >驳回</el-button
-                  >
+                  size="mini"
+                  type="danger"
+                  @click="confirmReject(props.row.id, -1)"
+                  >驳回</el-button
+                >
                 <el-dialog
                   width="90%"
                   title="委员任命"
                   :visible.sync="dialogTableVisible"
                   append-to-body
                 >
-                <div style="float:right;">
-                  <el-select v-model="value" filterable placeholder="请选择">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.userId"
-                      :label="item.name"
-                      :value="item.userId"
+                  <div style="float: right">
+                    <el-select
+                      v-model="value"
+                      multiple
+                      filterable
+                      placeholder="请选择"
                     >
-                    </el-option>
-                  </el-select>
-                  <el-button
-                  size="medium"
-                  type="primary"
-                  @click="confirmAppoint(props.row.id)"
-                  >确认</el-button>
+                      <el-option
+                        v-for="item in options"
+                        :key="item.userId"
+                        :label="item.name"
+                        :value="item.userId"
+                      >
+                      </el-option>
+                    </el-select>
+                    <el-button
+                      size="medium"
+                      type="primary"
+                      @click="confirmAppoint(props.row.id)"
+                      >确认</el-button
+                    >
                   </div>
                   <el-table
                     :data="memberlist.data"
@@ -238,7 +251,7 @@
 
 <script>
 import axios from "axios";
-import {Download} from "@/components/commonScript.js";
+import { Download } from "@/components/commonScript.js";
 export default {
   name: "chairman_approve",
   data() {
@@ -255,47 +268,59 @@ export default {
     this.load();
   },
   methods: {
-    approvalTrack: function(applicationId,method){
-      if(this.textarea==''&&method==-1){
-                      this.$message.error('未填写驳回原因');return;}
+    approvalTrack: function (applicationId, method) {
+      if (this.textarea == "" && method == -1) {
+        this.$message.error("未填写驳回原因");
+        return;
+      }
       axios({
-                method:'post',
-                url:'/chairman/approvalTrack',
-                data:{
-                    applicationId: applicationId,
-                    rejectReason: this.textarea,
-                    state: method,
-                }
-            }).then((res)=>
-            {
-                if(res.data.code===200)
-                {
-                    this.$message({
-          message: '成功',
-          type: 'success'
-        });
-                      this.load();
-                }
-                else this.$message.error(res.data.message);
-                      this.load();
-            }).catch((err)=>{
-                this.$message.error(err);
-            })
-            this.load();
-    },
-    confirm(applicationId,method){
-      if(this.textarea==''&&method==-1){this.$message.error('未填写驳回原因');return;}
-      this.$confirm("您确定要"+ (method==1?"批准":"驳回") +"项目：" +applicationId+"吗？", "确认信息", {
-        type: "info",
-        confirmButtonText: "确认",
-        cancelButtonText: "放弃",
+        method: "post",
+        url: "/chairman/approvalTrack",
+        data: {
+          applicationId: applicationId,
+          rejectReason: this.textarea,
+          state: method,
+        },
       })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+            this.load();
+          } else this.$message.error(res.data.message);
+          this.load();
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    confirm(applicationId, method) {
+      if (this.textarea == "" && method == -1) {
+        this.$message.error("未填写驳回原因");
+        return;
+      }
+      this.$confirm(
+        "您确定要" +
+          (method == 1 ? "批准" : "驳回") +
+          "项目：" +
+          applicationId +
+          "吗？",
+        "确认信息",
+        {
+          type: "info",
+          confirmButtonText: "确认",
+          cancelButtonText: "放弃",
+        }
+      )
         .then((res) => {
           this.$message({
             type: "info",
             message: "进行审批",
           });
-          this.approvalTrack(applicationId,method)
+          this.approvalTrack(applicationId, method);
         })
         .catch((action) => {
           this.$message({
@@ -304,45 +329,51 @@ export default {
           });
         });
     },
-    reject: function(applicationId,method){
+    reject: function (applicationId, method) {
       axios({
-                method:'post',
-                url:'/chairman/rejection',
-                data:{
-                    applicationId: applicationId,
-                    rejectReason: this.textarea,
-                    state: method,
-                }
-            }).then((res)=>
-            {
-                if(res.data.code===200)
-                {
-                    this.$message({
-          message: '成功',
-          type: 'success'
-        });
-                      this.load();
-                }
-                else this.$message.error(res.data.message);
-                      this.load();
-            }).catch((err)=>{
-                this.$message.error(err);
-            })
-            this.load();
-    },
-    confirmReject: function(applicationId,method){
-      if(this.textarea==''&&method!=1){this.$message.error('未填写驳回原因');return;}
-      this.$confirm("您确定要修改/驳回项目：" +applicationId+"吗？", "确认信息", {
-        type: "warning",
-        confirmButtonText: "确认",
-        cancelButtonText: "放弃",
+        method: "post",
+        url: "/chairman/rejection",
+        data: {
+          applicationId: applicationId,
+          rejectReason: this.textarea,
+          state: method,
+        },
       })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+            this.load();
+          } else this.$message.error(res.data.message);
+          this.load();
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    confirmReject: function (applicationId, method) {
+      if (this.textarea == "" && method != 1) {
+        this.$message.error("未填写驳回原因");
+        return;
+      }
+      this.$confirm(
+        "您确定要修改/驳回项目：" + applicationId + "吗？",
+        "确认信息",
+        {
+          type: "warning",
+          confirmButtonText: "确认",
+          cancelButtonText: "放弃",
+        }
+      )
         .then((res) => {
           this.$message({
             type: "info",
             message: "进行审批",
           });
-          this.reject(applicationId,method)
+          this.reject(applicationId, method);
         })
         .catch((action) => {
           this.$message({
@@ -352,18 +383,30 @@ export default {
         });
     },
     confirmAppoint: function (applicationId) {
-      this.$confirm("您确定要委任" + this.value + "为项目"+applicationId+"的委员吗？", "确认信息", {
-        distinguishCancelAndClose: true,
-        type: "warning",
-        confirmButtonText: "确认",
-        cancelButtonText: "放弃",
-      })
+      //console.log(this.value);
+      if (this.value.length < 3) {
+        this.$message({
+          type: "info",
+          message: "请委任三人及以上的委员",
+        });
+        return;
+      }
+      this.$confirm(
+        "您确定要委任" + this.value + "为项目" + applicationId + "的委员吗？",
+        "确认信息",
+        {
+          distinguishCancelAndClose: true,
+          type: "warning",
+          confirmButtonText: "确认",
+          cancelButtonText: "放弃",
+        }
+      )
         .then((res) => {
           this.$message({
             type: "info",
             message: "进行委任",
           });
-          this.appoint(applicationId)
+          this.appoint(applicationId);
         })
         .catch((action) => {
           this.$message({
@@ -372,28 +415,27 @@ export default {
           });
         });
     },
-    appoint:function(applicationId){
+    appoint: function (applicationId) {
       axios({
-                method:'post',
-                url:'/chairman/assign',
-                data:{
-                    applicationId: applicationId,
-                    userId: this.value
-                }
-            }).then((res)=>
-            {
-                if(res.data.code===200)
-                {
-                    this.$message({
-          message: '成功',
-          type: 'success'
+        method: "post",
+        url: "/chairman/assign",
+        data: {
+          applicationId: applicationId,
+          userIdList: this.value,
+        },
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
         });
-                }
-                else this.$message.error(res.data.message);
-            }).catch((err)=>{
-                this.$message.error(err);
-            })
-            this.load();
+      this.load();
     },
     download: function (url) {
       Download(url);
@@ -444,7 +486,7 @@ export default {
         });
     },
     load: function () {
-      this.textarea="";
+      this.textarea = "";
       axios({
         url: "/chairman/auditSet",
         method: "get",
