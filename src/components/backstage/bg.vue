@@ -60,7 +60,7 @@
         <i class="el-icon-notebook-2"></i>
         <span @click="jmp('myapplications')" slot="title">我的申请</span>
       </el-menu-item>
-      <el-menu-item @click="jmp('approve')" :disabled="disableApprove" index="4">
+      <el-menu-item @click="jmp('approve')" v-if="!hideApprove" index="4">
         <i class="el-icon-s-check"></i>
         <span @click="jmp('approve')" slot="title">项目审批</span>
       </el-menu-item>
@@ -83,7 +83,7 @@ export default {
       information: "",
       changeInfoDialogVisible: false,
       infoForm: { email: "", fax: "", mobilePhone: "", officePhone: "" },
-      disableApprove:true,
+      hideApprove:true,
     };
   },
   mounted() {
@@ -91,7 +91,7 @@ export default {
     var identities = JSON.parse(localStorage.getItem('identity'));
     if (
       !identities.includes("普通用户") 
-     ) this.disableApprove = false;
+     ) this.hideApprove = false;
   },
   methods: {
     handleOpen(key, keyPath) {

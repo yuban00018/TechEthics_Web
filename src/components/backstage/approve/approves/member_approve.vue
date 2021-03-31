@@ -72,16 +72,18 @@
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
-                  :disabled="props.row.applicationFile==''"
+                  :disabled="props.row.applicationFile == ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.applicationFile)"
-                >下载附件</el-button>
+                  >下载附件</el-button
+                >
                 <el-button
                   size="mini"
                   type="primary"
                   @click="download(props.row.applicationPdf)"
-                >下载PDF</el-button>
+                  >下载PDF</el-button
+                >
               </template>
             </el-form-item>
             <br />
@@ -89,6 +91,7 @@
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-upload
+                  v-if="props.row.approved"
                   class="upload"
                   action="/api/file/upload"
                   :headers="headers"
@@ -104,9 +107,34 @@
                 >
                   <el-button size="small" type="primary">上传同意书</el-button>
                 </el-upload>
-                <el-button size="mini" type="success" @click="approval(props.row, 1)">批准</el-button>
-                <el-button size="mini" type="warning" @click="approval(props.row, 0)">修改</el-button>
-                <el-button size="mini" type="danger" @click="approval(props.row, -1)">驳回</el-button>
+                <el-button
+                  v-if="props.row.approved"
+                  size="mini"
+                  type="success"
+                  @click="submitAgreement(props.row)"
+                  >发送同意书</el-button
+                >
+                <el-button
+                  v-if="!props.row.approved"
+                  size="mini"
+                  type="success"
+                  @click="approval(props.row, 1)"
+                  >批准</el-button
+                >
+                <el-button
+                  v-if="!props.row.approved"
+                  size="mini"
+                  type="warning"
+                  @click="approval(props.row, 0)"
+                  >修改</el-button
+                >
+                <el-button
+                  v-if="!props.row.approved"
+                  size="mini"
+                  type="danger"
+                  @click="approval(props.row, -1)"
+                  >驳回</el-button
+                >
               </template>
             </el-form-item>
           </el-form>
@@ -114,15 +142,31 @@
       </el-table-column>
 
       <el-table-column width="100" prop="id" label="项目编号"></el-table-column>
-      <el-table-column width="200" prop="name" label="项目名称"></el-table-column>
-      <el-table-column width="200" prop="userId" label="用户Id"></el-table-column>
-      <el-table-column width="250" prop="creationTime" label="创建时间"></el-table-column>
+      <el-table-column
+        width="200"
+        prop="name"
+        label="项目名称"
+      ></el-table-column>
+      <el-table-column
+        width="200"
+        prop="userId"
+        label="用户Id"
+      ></el-table-column>
+      <el-table-column
+        width="250"
+        prop="creationTime"
+        label="创建时间"
+      ></el-table-column>
       <el-table-column width="200" prop="type" label="类型"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
-      <el-table-column width="150" fixed="right" label="操作">
+      <el-table-column width="80" fixed="right" label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="expand(scope.row)">展开</el-button>
-          <el-button size="mini" type="info" @click="contract(scope.row)">收起</el-button>
+          <el-button v-if="!scope.row.expanded" size="mini" type="primary" @click="expand(scope.row)"
+            >展开</el-button
+          >
+          <el-button v-if="scope.row.expanded" size="mini" type="info" @click="contract(scope.row)"
+            >收起</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -139,7 +183,7 @@ export default {
       information: "",
       textarea: "",
       fileUrl: "",
-      fileList:[],
+      fileList: [],
     };
   },
   mounted() {
@@ -148,11 +192,38 @@ export default {
   computed: {
     headers() {
       return {
-        Authorization: localStorage.getItem("token")
+        Authorization: localStorage.getItem("token"),
       };
-    }
+    },
   },
   methods: {
+    submitAgreement(row) {
+      if (this.fileUrl == "") {
+        this.$message.error("未上传同意书");
+        return;
+      }
+      axios({
+        method: "post",
+        url: "/member/fileUpload",
+        data: {
+          applicationId: row.id,
+          fileUrl: this.fileUrl,
+        },
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+      this.fileUrl = "";
+    },
     uploadConsent(response, file, fileList) {
       //console.log(response.data);
       this.fileUrl = response.data;
@@ -165,17 +236,19 @@ export default {
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 1 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
       );
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    approval: function(row, choice) {
-      if(this.textarea==''&&(choice==-1||choice==0)){
-                      this.$message.error('未填写驳回原因');return;}
+    approval: function (row, choice) {
+      if (this.textarea == "" && (choice == -1 || choice == 0)) {
+        this.$message.error("未填写驳回原因");
+        return;
+      }
       axios({
         method: "post",
         url: "/member/approval",
@@ -183,25 +256,22 @@ export default {
           applicationId: row.id,
           rejectReason: this.textarea,
           state: choice,
-          fileUri: this.fileUrl
-        }
+        },
       })
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 200) {
             this.$message({
-          message: '成功',
-          type: 'success'
-        });
-          } else
-            this.$message.error(res.data.message);
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error(err);
         });
       this.load();
-      this.fileUrl = "";
     },
-    download: function(url) {
+    download: function (url) {
       Download(url);
     },
     change(event) {
@@ -209,17 +279,18 @@ export default {
     },
     contract(row) {
       this.$refs.multipleTable.toggleRowExpansion(row, false);
+      row.expanded=false;
     },
-    print: function(sth) {
+    print: function (sth) {
       console.log(sth);
     },
-    expand: function(row) {
+    expand: function (row) {
       axios({
         method: "get",
         url: "/user/applicationInfo?applicationId=" + row.id,
-        data: {}
+        data: {},
       })
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 200) {
             row.leaderAgent = res.data.data.leaderAgent;
             row.institution = res.data.data.institution;
@@ -238,29 +309,35 @@ export default {
             row.projectAbstract = res.data.data.projectAbstract;
             row.applicationFile = res.data.data.applicationFile;
             row.applicationPdf = res.data.data.applicationPdf;
+            row.memberResList = res.data.data.memberResList;
+            row.approved=true;
+            for(var i=0;i<row.memberResList.length;i++){
+              if(row.memberResList[i]['state']!=1)row.approved=false;
+            }
             this.$refs.multipleTable.toggleRowExpansion(row, true);
+            row.expanded=true;
           } else this.$message.error(res.data.message);
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error(err);
         });
     },
-    load: function() {
+    load: function () {
       axios({
         url: "/member/auditSet",
-        method: "get"
+        method: "get",
       })
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 200) {
             this.information = res.data.data;
           } else this.information = res.data.code;
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message.error(err);
         });
     },
-    test_post() {}
-  }
+    test_post() {},
+  },
 };
 </script>
 

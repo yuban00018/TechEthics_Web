@@ -103,10 +103,10 @@
       <el-table-column width="250" prop="creationTime" label="创建时间"></el-table-column>
       <el-table-column width="200" prop="type" label="类型"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
-      <el-table-column width="150" fixed="right" label="操作">
+      <el-table-column width="80" fixed="right" label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="expand(scope.row)">展开</el-button>
-          <el-button size="mini" type="info" @click="contract(scope.row)">收起</el-button>
+          <el-button v-if="!scope.row.expanded" size="mini" type="primary" @click="expand(scope.row)">展开</el-button>
+          <el-button v-if="scope.row.expanded" size="mini" type="info" @click="contract(scope.row)">收起</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -161,6 +161,7 @@ export default {
     },
     contract(row) {
       this.$refs.multipleTable.toggleRowExpansion(row, false);
+      row.expanded=false;
     },
     print: function(sth) {
       console.log(sth);
@@ -192,6 +193,7 @@ export default {
             row.applicationPdf = res.data.data.applicationPdf;
             row.id = res.data.data.id;
             this.$refs.multipleTable.toggleRowExpansion(row, true);
+            row.expanded=true;
           } else this.$message.error(res.data.message);
         })
         .catch(err => {
