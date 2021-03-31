@@ -350,7 +350,7 @@ export default {
   -webkit-transition:background-image 4s;
 }
 #picture01 {
-  height: 180px;
+  height: 150px;
   width: 22.4%;
   position: absolute;
   top: 0px;
@@ -362,7 +362,7 @@ export default {
   width: 20%;
   position: absolute;
   left: 17.3%;
-  top: 53px;
+  top: 45px;
   font-size: 25px;
   color: #fefefe;
   z-index: 10;
