@@ -438,12 +438,12 @@
           label="状态"
           fixed="right"
         ></el-table-column>
-        <el-table-column width="150" fixed="right" label="操作">
+        <el-table-column width="80" fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="expand(scope.row)"
+            <el-button v-if="!scope.row.expanded" size="mini" type="primary" @click="expand(scope.row)"
               >展开</el-button
             >
-            <el-button size="mini" type="info" @click="contract(scope.row)"
+            <el-button v-if="scope.row.expanded" size="mini" type="info" @click="contract(scope.row)"
               >收起</el-button
             >
           </template>
@@ -1089,6 +1089,7 @@ export default {
     },
     contract: function (row) {
       this.$refs.multipleTable.toggleRowExpansion(row, false);
+      row.expanded=false;
     },
     expand: function (row) {
       axios({
@@ -1121,6 +1122,7 @@ export default {
             row.trackFile = res.data.data.trackFile;
             row.id = res.data.data.id;
             this.$refs.multipleTable.toggleRowExpansion(row, true);
+            row.expanded=true;
           } else this.$message.error(res.data.message);
         })
         .catch((err) => {
