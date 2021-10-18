@@ -65,21 +65,23 @@
         <el-row>
           <el-form-item label="项目类别">
             <el-radio-group v-model="watch_project_type">
-              <el-col :span="20">
-                <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
-                <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
-                <el-radio border label="C.新技术应用" class="apply"></el-radio>
-                <el-radio border label="D.人体标本收集" class="apply"></el-radio>
-                <el-radio label="E.其他（请注明）" class="apply"></el-radio>
-              </el-col>
-              <el-col :span="4">
-                <el-input
-                  @input="change($event)"
-                  :disabled="disable_type_input"
-                  v-model="project_typeE"
-                  id="apply_program_programInput"
-                ></el-input>
-              </el-col>
+              <div style="position: absolute;left:-6px;top: 0px;">
+                <el-col :span="20">
+                  <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
+                  <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
+                  <el-radio border label="C.新技术应用" class="apply"></el-radio>
+                  <el-radio border label="D.人体标本收集" class="apply"></el-radio>
+                  <el-radio label="E.其他（请注明）" class="apply"></el-radio>
+                </el-col>
+                <el-col :span="4">
+                  <el-input
+                    @input="change($event)"
+                    :disabled="disable_type_input"
+                    v-model="project_typeE"
+                    id="apply_program_programInput"
+                  ></el-input>
+                </el-col>
+              </div>
             </el-radio-group>
           </el-form-item>
         </el-row>
@@ -135,37 +137,39 @@
         <el-row>
           <el-form-item label="经费来源">
             <el-col :span="12">
-              <el-checkbox-group v-model="form.temp"  :max="1">
-                <el-checkbox border
-                  label="政府"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(0)"
-                ></el-checkbox>
-                <el-checkbox border
-                  label="基金会"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(1)"
-                ></el-checkbox>
-                <el-checkbox border
-                  label="公司"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(2)"
-                ></el-checkbox>
-                <el-checkbox border
-                  label="国际组织"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(3)"
-                ></el-checkbox>
-                <el-checkbox border
-                  label="其他"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(4)"
-                ></el-checkbox>
+              <el-checkbox-group v-model="form.temp" :max="1">
+                <div style="position:absolute; left:0px;">
+                  <el-checkbox border
+                               label="政府"
+                               name="temp"
+                               class="apply"
+                               @click="fundingSource(0)"
+                  ></el-checkbox>
+                  <el-checkbox  border
+                                label="基金会"
+                                name="temp"
+                                class="apply"
+                                @click="fundingSource(1)"
+                  ></el-checkbox>
+                  <el-checkbox border
+                               label="公司"
+                               name="temp"
+                               class="apply"
+                               @click="fundingSource(2)"
+                  ></el-checkbox>
+                  <el-checkbox border
+                               label="国际组织"
+                               name="temp"
+                               class="apply"
+                               @click="fundingSource(3)"
+                  ></el-checkbox>
+                  <el-checkbox border
+                               label="其他"
+                               name="temp"
+                               class="apply"
+                               @click="fundingSource(4)"
+                  ></el-checkbox>
+                </div>
               </el-checkbox-group>
             </el-col>
           </el-form-item>
@@ -205,15 +209,19 @@
                 :on-exceed="handleExceed"
                 :file-list="fileList"
               >
-                <el-button type="primary">项目附件(压缩包)</el-button>
+                <div style="position:absolute;left:0px;top:0px;">
+                  <el-button type="primary">项目附件(压缩包)</el-button>
+                </div>
               </el-upload>
             </el-col>
           </el-form-item>
         </el-row>
       </el-form>
-      <el-button type="success" id="submitButton" @click="Submit"
-      >提交申请
-      </el-button>
+      <div style="position:absolute;left:-20px;margin-top:5px;">
+        <el-button type="success" id="submitButton" @click="Submit"
+        >提交申请
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
