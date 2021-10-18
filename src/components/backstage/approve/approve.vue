@@ -5,7 +5,7 @@
   class="approveMode"
   mode="horizontal"
   @select="handleSelect"
-  background-color="#f0f8fa"
+  background-color="#ffffff"
   text-color="#000"
   active-text-color="#245086">
   <el-menu-item v-if="!disableSecretary" @click="jmp('secretary_approve')" id="secretary" index="1">学院秘书审批</el-menu-item>

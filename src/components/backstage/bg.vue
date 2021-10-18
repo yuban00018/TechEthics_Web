@@ -237,7 +237,7 @@ width: 200px;
   background-image: linear-gradient(#f0f8fa,#f0f8fa);
 }
 .content {
-  background-image: linear-gradient(#f0f8fa,#f0f8fa);
+  background-image: linear-gradient(#ffffff,#ffffff);
   position: absolute;
   left: 200px;
   top: 100px;
