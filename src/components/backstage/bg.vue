@@ -68,10 +68,8 @@
     </div>
     <div class="content">
       <router-view></router-view>
-    </ul>
-    </div> 
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -90,7 +88,7 @@ export default {
     this.info_update();
     var identities = JSON.parse(localStorage.getItem('identity'));
     if (
-      !identities.includes("普通用户") 
+      !identities.includes("普通用户")
      ) this.hideApprove = false;
   },
   methods: {
@@ -128,6 +126,14 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
+    },
+    jmp_apply: function (path,type) {
+      this.$router.replace(
+        "/backstage/" + path,
+        {type:type}
+      ).catch((err) => {
+        err;
+      });
     },
     jmp: function (path) {
       this.$router.replace("/backstage/" + path).catch((err) => {
@@ -205,7 +211,7 @@ button#changeInfo {
 #darkblue_bg {
   width: 100%;
   height: 100px;
-  background-image: linear-gradient(#245086);
+  background-image: linear-gradient(#245086,#245086);
   position: absolute;
   top: 0%;
   left: 0%;
@@ -228,10 +234,10 @@ width: 200px;
   top: 100px;
   left: 0%;
   position: absolute;
-  background-image: linear-gradient(#f0f8fa);
+  background-image: linear-gradient(#f0f8fa,#f0f8fa);
 }
 .content {
-  background-image: linear-gradient(#f0f8fa);
+  background-image: linear-gradient(#f0f8fa,#f0f8fa);
   position: absolute;
   left: 200px;
   top: 100px;

@@ -7,6 +7,7 @@
         style="width: 96%; height: 100%"
         id="list"
       >
+        <!--此处为展开栏-->
         <el-table-column type="expand" width="1">
           <template slot-scope="props">
             <el-form inline class="table-expand">
@@ -25,19 +26,29 @@
                 <span>{{ props.row.institution }}</span>
               </el-form-item>
               <br />
-              <el-form-item label="学院秘书经办人">
+              <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!='none'">
                 <span>{{ props.row.secretaryAgent }}</span>
               </el-form-item>
-              <el-form-item label="部门领导经办人">
+              <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!='none'">
                 <span>{{ props.row.leaderAgent }}</span>
               </el-form-item>
-              <el-form-item label="委员长经办人">
+              <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!='none'">
                 <span>{{ props.row.chairmanAgent }}</span>
               </el-form-item>
-              <el-form-item label="委员经办人">
-                <span>{{ props.row.memberAgent }}</span>
-              </el-form-item>
               <br />
+              <!--委员经办人应当实现显示多个经办人-->
+              <el-form-item label="委员经办人" v-if="props.row.memberResList!=''">
+                <!--<span>{{ props.row.memberAgent }}</span>-->
+                <span v-for="member in props.row.memberResList">
+                  {{member.userId}}
+                  <span v-if="member.state==-2">未审批</span>
+                  <span v-if="member.state==-1">驳回</span>
+                  <span v-if="member.state==0">驳回修改</span>
+                  <span v-if="member.state==1">已批准</span>
+                  <br/>
+                </span>
+              </el-form-item>
+              <br v-if="props.row.memberResList!=''"/>
               <el-form-item label="预定的起止时间">
                 <span>{{ props.row.scheduleTime }}</span>
               </el-form-item>
@@ -45,14 +56,14 @@
                 <span>{{ props.row.creationTime }}</span>
               </el-form-item>
               <br />
-              <el-form-item label="申请同意时间">
+              <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
                 <span>{{ props.row.beginTime }}</span>
               </el-form-item>
               <!--
               <el-form-item label="执行期">
                 <span>{{ props.row.executionTime }}</span>
               </el-form-item>-->
-              <el-form-item label="结束时间">
+              <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
                 <span>{{ props.row.endTime }}</span>
               </el-form-item>
               <br />
@@ -458,31 +469,17 @@
       append-to-body
     >
       <div>
-        <el-upload
-          class="upload-demo"
-          action="/api/file/upload"
-          :headers="headers"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :on-success="handleSuccess"
-          multiple
-          :limit="1"
-          accept=".rar,.zip,.7z"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">
-            只能上传rar,zip,7z格式的文件,若无修改不需要点击上传
-          </div>
-        </el-upload>
 
-        <el-form ref="form" :model="form">
+        <el-form
+          ref="form"
+          :model="form"
+          label-width="160px"
+        >
+          <br>
+          <!--项目单位-->
           <el-row>
             <el-form-item
               label="项目单位"
-              label-width="150"
               class="apply"
               id="apply_program_institution"
             >
@@ -491,10 +488,10 @@
               </el-col>
             </el-form-item>
           </el-row>
+          <!--项目名称-->
           <el-row>
             <el-form-item
               label="项目名称"
-              label-width="150"
               class="apply"
               id="apply_program_name"
             >
@@ -503,8 +500,9 @@
               </el-col>
             </el-form-item>
           </el-row>
+          <!--起止日期-->
           <el-row>
-            <el-form-item label="起止时间" id="apply_program_timeLabel01">
+            <el-form-item label="起止日期（具体到月）" id="apply_program_timeLabel01">
               <el-col :span="8">
                 <el-date-picker
                   type="date"
@@ -517,7 +515,8 @@
                 ></el-date-picker>
               </el-col>
               <el-col class="line" :span="1" id="apply_program_timeCol01"
-                >----------</el-col
+              > 到
+              </el-col
               >
               <el-col :span="8">
                 <el-date-picker
@@ -531,20 +530,19 @@
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--项目类别-->
           <el-row>
-            <el-form-item label="项目类别" id="el-form-item01">
+            <el-form-item label="项目类别">
               <el-radio-group v-model="watch_project_type">
                 <el-col :span="20">
-                  <el-radio label="A.新药物临床实验" class="apply"></el-radio>
-                  <el-radio label="B.新器械临床实验" class="apply"></el-radio>
-                  <el-radio label="C.新技术应用" class="apply"></el-radio>
-                  <el-radio label="D.人体标本收集" class="apply"></el-radio>
+                  <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
+                  <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
+                  <el-radio border label="C.新技术应用" class="apply"></el-radio>
+                  <el-radio border label="D.人体标本收集" class="apply"></el-radio>
                   <el-radio label="E.其他（请注明）" class="apply"></el-radio>
                 </el-col>
                 <el-col :span="4">
                   <el-input
-                    size="mini"
                     @input="change($event)"
                     :disabled="disable_type_input"
                     v-model="project_typeE"
@@ -554,7 +552,7 @@
               </el-radio-group>
             </el-form-item>
           </el-row>
-
+          <!--办公电话-->
           <el-row>
             <el-form-item
               label="办公电话"
@@ -566,7 +564,7 @@
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--传真-->
           <el-row>
             <el-form-item label="传真" class="apply" id="apply_program_fax">
               <el-col :span="6">
@@ -574,7 +572,7 @@
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--手机-->
           <el-row>
             <el-form-item label="手机" class="apply" id="apply_program_phone">
               <el-col :span="6">
@@ -582,19 +580,15 @@
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--邮箱-->
           <el-row>
-            <el-form-item
-              label="电子邮箱"
-              class="apply"
-              id="apply_program_email"
-            >
+            <el-form-item label="电子邮箱" class="apply" id="apply_program_email">
               <el-col :span="6">
                 <el-input v-model="form.email"></el-input>
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--研究方向-->
           <el-row>
             <el-form-item
               label="目前主要研究方向"
@@ -606,46 +600,46 @@
               </el-col>
             </el-form-item>
           </el-row>
-
+          <!--经费来源-->
           <el-row>
-          <el-form-item label="经费来源(单选)">
-            <el-col :span="12">
-              <el-checkbox-group v-model="form.temp">
-                <el-checkbox
-                  label="政府"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(0)"
-                ></el-checkbox>
-                <el-checkbox
-                  label="基金会"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(1)"
-                ></el-checkbox>
-                <el-checkbox
-                  label="公司"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(2)"
-                ></el-checkbox>
-                <el-checkbox
-                  label="国际组织"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(3)"
-                ></el-checkbox>
-                <el-checkbox
-                  label="其他"
-                  name="temp"
-                  class="apply"
-                  @click="fundingSource(4)"
-                ></el-checkbox>
-              </el-checkbox-group>
-            </el-col>
-          </el-form-item>
-        </el-row>
-
+            <el-form-item label="经费来源(单选)">
+              <el-col :span="12">
+                <el-checkbox-group v-model="form.temp">
+                  <el-checkbox
+                    label="政府"
+                    name="temp"
+                    class="apply"
+                    @click="fundingSource(0)"
+                  ></el-checkbox>
+                  <el-checkbox
+                    label="基金会"
+                    name="temp"
+                    class="apply"
+                    @click="fundingSource(1)"
+                  ></el-checkbox>
+                  <el-checkbox
+                    label="公司"
+                    name="temp"
+                    class="apply"
+                    @click="fundingSource(2)"
+                  ></el-checkbox>
+                  <el-checkbox
+                    label="国际组织"
+                    name="temp"
+                    class="apply"
+                    @click="fundingSource(3)"
+                  ></el-checkbox>
+                  <el-checkbox
+                    label="其他"
+                    name="temp"
+                    class="apply"
+                    @click="fundingSource(4)"
+                  ></el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+            </el-form-item>
+          </el-row>
+          <!--研究摘要-->
           <el-row>
             <el-form-item
               label="研究内容摘要："
@@ -653,18 +647,48 @@
               class="apply"
               id="apply_program_project_abstract"
             >
-              <el-input
-                type="textarea"
-                autosize
-                v-model="form.project_abstract"
-              ></el-input>
+              <el-col :span="12">
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 5, maxRows: 10}"
+                  v-model="form.project_abstract"
+                ></el-input>
+              </el-col>
             </el-form-item>
           </el-row>
+          <!--附件上传-->
+          <el-row>
+            <el-form-item label="附件上传">
+              <el-col :span="4">
+                <el-upload
+                  class="upload-demo"
+                  action="/api/file/upload"
+                  :headers="headers"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :before-remove="beforeRemove"
+                  :on-success="handleSuccess"
+                  multiple
+                  :limit="1"
+                  accept=".rar,.zip,.7z"
+                  :on-exceed="handleExceed"
+                  :file-list="fileList"
+                >
+                  <el-button type="primary">项目附件(压缩包)</el-button>
+                </el-upload>
+              </el-col>
+            </el-form-item>
+          </el-row>
+
+          <el-form-item>
+          <el-row>
+            <el-button type="success" id="apply_submit" @click="Update"
+            >修改完成</el-button
+            >
+          </el-row>
+          </el-form-item>
         </el-form>
 
-        <el-button type="primary" id="apply_submit" @click="Update"
-          >修改完成</el-button
-        >
       </div>
     </el-dialog>
   </div>
@@ -674,7 +698,6 @@
 <script>
 import axios from "axios";
 import { Download } from "@/components/commonScript.js";
-// import func from "../../../vue-temp/vue-editor-bridge";
 export default {
   name: "myapplications",
   watch: {
@@ -1121,8 +1144,10 @@ export default {
             row.summary = res.data.data.summary;
             row.trackFile = res.data.data.trackFile;
             row.id = res.data.data.id;
+            row.memberResList = res.data.data.memberResList;
             this.$refs.multipleTable.toggleRowExpansion(row, true);
             row.expanded=true;
+            console.log(row.memberResList)
           } else this.$message.error(res.data.message);
         })
         .catch((err) => {

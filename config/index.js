@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {   //匹配所有以/api开头的请求路径
-        target: 'http://techethics.songcm.cn/api', //代理目标的基础路径
+        target: 'http://localhost:8888/api', //代理目标的基础路径
         changeOrigin: true, //支持跨域
         pathRewrite: {  //重写路径：去掉路径中开头的/api
           '^/api': ''
@@ -28,7 +28,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */

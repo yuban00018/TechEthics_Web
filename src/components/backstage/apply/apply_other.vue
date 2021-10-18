@@ -1,99 +1,16 @@
 <template>
-  <!-- <p style="color: red; left:25px; position:absolute;">项目申请</p> -->
-  <div>
-    <div class="apply_program_class" id="apply_program_first">
-      <div class="apply_program_class2" id="apply_program_name01">申请须知</div>
-      <div class="apply_program_class1" id="apply_program_name02">说明:</div>
-      <div class="apply_program_class1" id="apply_program_name03">
-        1、 本部伦理审查所有环节均不收取任何费用
-      </div>
-      <div class="apply_program_class1" id="apply_program_name04">
-        2、 本部伦理审查范围：
-      </div>
-      <div class="apply_program_class1" id="apply_program_name05">
-        (1) 拟开展的动物实验项目（项目申报阶段）;
-      </div>
-      <div class="apply_program_class1" id="apply_program_name06">
-        (2) 在本单位实验动物楼开展的动物实验项目（以本部代养协议为准）。
-      </div>
-      <div class="apply_program_class1" id="apply_program_name07">
-        3、
-        完成整个审查流程一般需要10个工作日，如信息不完整或申请表填写问题较多时，审查时间将会延长，因此请申请人务必按要求认真准备
-      </div>
-      <div class="apply_program_class1" id="apply_program_name08">
-        申请材料，如有问题请及时邮件沟通。
-      </div>
-      <div class="apply_program_class1" id="apply_program_name09">
-        4、 附件要求：
-      </div>
-      <div class="apply_program_class1" id="apply_program_name10">
-        （1） 拟开展的动物实验项目（项目申报阶段）：按申请表内容提供有关附件；
-      </div>
-      <div class="apply_program_class1" id="apply_program_name11">
-        （2）
-        已经在本部实施的动物实验项目：除申请表所述附件外，还需提供所使用动物的有效质量合格证、本部有效代养协议、本部实验服务
-      </div>
-      <div class="apply_program_class1" id="apply_program_name12">
-        结算依据和明细、以及对应的付款通知和发票/校内转账凭证等；
-      </div>
-      <div class="apply_program_class1" id="apply_program_name13">
-        （3） 根据审查意见提供其他有关材料；
-      </div>
-      <div class="apply_program_class1" id="apply_program_name14">
-        （4）
-        为确保审查效率，附件请以原件或清晰的照片打印件、扫描打印件、复印件的方式提供，以原件形式提交的附件经审核后将退还申请
-      </div>
-      <div class="apply_program_class1" id="apply_program_name15">人。</div>
-      <div class="apply_program_class2" id="apply_program_name16">
-        /*以上为互联网内容，仅作为内容填充*/
-      </div>
-      <el-button
-        type="primary"
-        plain
-        id="apply_program_button01"
-        @click="clickEvent01"
-        >同意</el-button
+  <div class="bg">
+    <div>
+      <el-form
+        ref="form"
+        :model="form"
+        label-width="160px"
       >
-    </div>
-
-    <div id="apply_program_next" style="display: none">
-      <el-form ref="form" :model="form">
-        <el-row>
-          <el-form-item
-            label="项目附件"
-            label-width="150"
-            class="apply"
-          >
-            <el-col :span="1">
-              <el-upload
-                class="upload-demo"
-                action="/api/file/upload"
-                :headers="headers"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :before-remove="beforeRemove"
-                :on-success="handleSuccess"
-                multiple
-                :limit="1"
-                accept=".rar,.zip,.7z"
-                :on-exceed="handleExceed"
-                :file-list="fileList"
-              >
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
-            </el-col>
-            <el-col :span="6">
-              <div>
-                  只能上传rar,zip,7z格式的文件
-                </div>
-            </el-col>
-          </el-form-item>
-        </el-row>
-
+        <br>
+        <!--项目单位-->
         <el-row>
           <el-form-item
             label="项目单位"
-            label-width="150"
             class="apply"
             id="apply_program_institution"
           >
@@ -102,10 +19,10 @@
             </el-col>
           </el-form-item>
         </el-row>
+        <!--项目名称-->
         <el-row>
           <el-form-item
             label="项目名称"
-            label-width="150"
             class="apply"
             id="apply_program_name"
           >
@@ -114,8 +31,9 @@
             </el-col>
           </el-form-item>
         </el-row>
+        <!--起止日期-->
         <el-row>
-          <el-form-item label="起止时间" id="apply_program_timeLabel01">
+          <el-form-item label="起止日期（具体到月）" id="apply_program_timeLabel01">
             <el-col :span="8">
               <el-date-picker
                 type="date"
@@ -128,7 +46,8 @@
               ></el-date-picker>
             </el-col>
             <el-col class="line" :span="1" id="apply_program_timeCol01"
-              >----------</el-col
+            > 到
+            </el-col
             >
             <el-col :span="8">
               <el-date-picker
@@ -142,20 +61,19 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--项目类别-->
         <el-row>
-          <el-form-item label="项目类别" id="el-form-item01">
+          <el-form-item label="项目类别">
             <el-radio-group v-model="watch_project_type">
               <el-col :span="20">
-                <el-radio label="A.新药物临床实验" class="apply"></el-radio>
-                <el-radio label="B.新器械临床实验" class="apply"></el-radio>
-                <el-radio label="C.新技术应用" class="apply"></el-radio>
-                <el-radio label="D.人体标本收集" class="apply"></el-radio>
+                <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
+                <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
+                <el-radio border label="C.新技术应用" class="apply"></el-radio>
+                <el-radio border label="D.人体标本收集" class="apply"></el-radio>
                 <el-radio label="E.其他（请注明）" class="apply"></el-radio>
               </el-col>
               <el-col :span="4">
                 <el-input
-                  size="mini"
                   @input="change($event)"
                   :disabled="disable_type_input"
                   v-model="project_typeE"
@@ -165,7 +83,7 @@
             </el-radio-group>
           </el-form-item>
         </el-row>
-
+        <!--办公电话-->
         <el-row>
           <el-form-item
             label="办公电话"
@@ -177,7 +95,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--传真-->
         <el-row>
           <el-form-item label="传真" class="apply" id="apply_program_fax">
             <el-col :span="6">
@@ -185,7 +103,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--手机-->
         <el-row>
           <el-form-item label="手机" class="apply" id="apply_program_phone">
             <el-col :span="6">
@@ -193,7 +111,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--邮箱-->
         <el-row>
           <el-form-item label="电子邮箱" class="apply" id="apply_program_email">
             <el-col :span="6">
@@ -201,7 +119,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--研究方向-->
         <el-row>
           <el-form-item
             label="目前主要研究方向"
@@ -213,7 +131,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--经费来源-->
         <el-row>
           <el-form-item label="经费来源(单选)">
             <el-col :span="12">
@@ -252,7 +170,7 @@
             </el-col>
           </el-form-item>
         </el-row>
-
+        <!--研究摘要-->
         <el-row>
           <el-form-item
             label="研究内容摘要："
@@ -260,64 +178,89 @@
             class="apply"
             id="apply_program_project_abstract"
           >
+            <el-col :span="12">
             <el-input
               type="textarea"
-              autosize
+              :autosize="{ minRows: 5, maxRows: 10}"
               v-model="form.project_abstract"
             ></el-input>
+            </el-col>
+          </el-form-item>
+        </el-row>
+        <!--附件上传-->
+        <el-row>
+          <el-form-item label="附件上传">
+            <el-col :span="4">
+              <el-upload
+                class="upload-demo"
+                action="/api/file/upload"
+                :headers="headers"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                :on-success="handleSuccess"
+                multiple
+                :limit="1"
+                accept=".rar,.zip,.7z"
+                :on-exceed="handleExceed"
+                :file-list="fileList"
+              >
+                <el-button type="primary">项目附件(压缩包)</el-button>
+              </el-upload>
+            </el-col>
           </el-form-item>
         </el-row>
       </el-form>
-
-      <el-button type="primary" plain id="apply_submit" @click="Submit"
-        >提交申请</el-button
-      >
+      <!--提交申请-->
+      <el-button type="success" @click="Submit" id="submitButton" style="left:150px">提交申请</el-button>
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
+
 export default {
-  name: "apply_program",
+  name: "apply_program_test",
   watch: {
     Watch_project_type(val) {
       switch (val) {
-        case "A.新药物临床实验":
-          this.form.project_type = "新药物临床实验";
+        case 'A.新药物临床实验':
+          this.form.project_type = '新药物临床实验';
           this.disable_type_input = true;
           this.project_typeE = "";
           break;
-        case "B.新器械临床实验":
-          this.form.project_type = "新器械临床实验";
+        case 'B.新器械临床实验':
+          this.form.project_type = '新器械临床实验';
           this.disable_type_input = true;
           this.project_typeE = "";
           break;
-        case "C.新技术应用":
-          this.form.project_type = "新技术应用";
+        case 'C.新技术应用':
+          this.form.project_type = '新技术应用';
           this.disable_type_input = true;
           this.project_typeE = "";
           break;
-        case "D.人体标本收集":
-          this.form.project_type = "人体标本收集";
+        case 'D.人体标本收集':
+          this.form.project_type = '人体标本收集';
           this.disable_type_input = true;
           this.project_typeE = "";
           break;
-        case "E.其他（请注明）":
+        case 'E.其他（请注明）':
           this.form.project_type = this.project_typeE;
           this.disable_type_input = false;
           break;
       }
-    },
+    }
   },
   computed: {
     headers() {
       return {
         Authorization: localStorage.getItem("token"),
-      };
+      }
     },
     Watch_project_type() {
       return this.watch_project_type;
-    },
+    }
   },
   data() {
     return {
@@ -336,19 +279,46 @@ export default {
         email: localStorage.getItem("email"),
         project_direction: "",
         project_abstract: "",
-        type: 0, //这个是funding source但我不知道为什么被命名为type了，请千万注意！！！
+        type: 0,//这个是funding source但我不知道为什么被命名为type了，请千万注意！！！
         temp: [],
         project_type: "",
         desc: "",
-        application_file: "",
+        application_file: ""
       },
     };
   },
   methods: {
+    //确认申请须知
+    confirm_notice: function () {
+      let data = ['1、 本部伦理审查所有环节均不收取任何费用', '2、 本部伦理审查范围：', '（1） 拟开展的实验项目（项目申报阶段）;'
+        , '3、 完成整个审查流程一般需要10个工作日，如信息不完整或申请表填写问题较多时，审查时间将会延长，因此请申请人务必按要求认真准备申请材料，如有问题请及时邮件沟通。',
+        '4、 附件要求：', '（1） 按申请表内容提供有关附件；', '（2） 根据审查意见提供其他有关材料；'];
+      //2.新建newDatas数组
+      let newDatas = [];
+      const h = this.$createElement;
+      //3.通过循环data数组，调用h方法，将每项值传给h,h('标签名',样式,具体内容)
+      for (let i in data) {
+        //4.将data数据push进newDatas数组中
+        newDatas.push(h('p', null, data[i]));
+      }
+      ;
+      this.$alert(h('div', null, newDatas), '申请须知', {
+        showClose: false,
+        confirmButtonText: '同意',
+        callback: action => {
+          this.$message({
+            type: 'info',
+            message: `您正在进行其他申请`
+          });
+        }
+      });
+    },
+    //文本改变事件
     change(event) {
       this.$forceUpdate();
       this.form.project_type = this.project_typeE;
     },
+    //信息本地保存
     saveInfo() {
       localStorage.setItem("email", this.form.email);
       localStorage.setItem("fax", this.form.fax);
@@ -361,13 +331,13 @@ export default {
     handleSuccess(response, file, fileList) {
       //console.log(response.data);
       this.form.application_file = response.data;
-      console.log(this.form.application_file);
     },
     handleRemove(file, fileList) {
       //console.log(file, fileList);
+      this.form.application_file = null;
     },
     handlePreview(file) {
-      //console.log(file.name);
+      console.log(file.name);
     },
     handleExceed(files, fileList) {
       this.$message.warning(
@@ -391,24 +361,24 @@ export default {
     Submit: function () {
       this.saveInfo();
       if (this.form.application_file == "") {
-        this.$message.error("您忘记上传文件了!");
+        this.$message.error('您忘记上传文件了!');
         return;
       }
-      switch(this.form.temp[0]){
+      switch (this.form.temp[0]) {
         case '政府':
-          this.form.type=0
+          this.form.type = 0
           break;
         case '基金会':
-          this.form.type=1
+          this.form.type = 1
           break;
         case '公司':
-          this.form.type=2
+          this.form.type = 2
           break;
         case '国际组织':
-          this.form.type=3
+          this.form.type = 3
           break;
         case '其他':
-          this.form.type=4
+          this.form.type = 4
           break;
       }
       axios({
@@ -432,11 +402,12 @@ export default {
           user_id: parseInt(localStorage.getItem("userId")),
         },
       })
-        .then((res) => {
+        .then(res => {
           if (res.data.code == 200) {
+            this.saveInfo();
             this.$message({
-              message: "成功，请在我的申请中提交项目",
-              type: "success",
+              message: '成功，请在我的申请中提交项目',
+              type: 'success'
             });
             this.$router.replace("/backstage/myapplications").catch((err) => {
               err;
@@ -451,30 +422,30 @@ export default {
       this.form.type = choice;
     },
   },
-};
+  mounted() {
+    this.confirm_notice();
+  },
+}
 </script>
 
 <style>
-.apply_program_class {
-  position: relative;
-  top: 5%;
-  width: 80%;
-  left: 10%;
-  font-size: 150%;
-  font-weight: bold;
+::v-deep .el-radio{
+  display: block;
+  line-height: 23px;
+  white-space: normal;
+  margin-right: 0;
 }
-.apply_program_class1 {
-  position: relative;
-  top: 100px;
-  text-align: left;
+.bg {
+  background-image: linear-gradient(#ffffff, #ffffff);
+  position: absolute;
+  top: 0;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  overflow: auto;
 }
-.apply_program_class2 {
-  position: relative;
-  top: 100px;
-  text-align: center;
-}
-#apply_program_button01 {
-  position: relative;
-  margin-top: 10%;
-}
-</style>  
+#submitButton {
+  position: absolute;
+  left: 180px;
+  }
+</style>
