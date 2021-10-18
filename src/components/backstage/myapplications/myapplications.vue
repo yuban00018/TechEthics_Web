@@ -280,43 +280,6 @@
                 </template>
               </el-form-item>
 
-              <!--<el-form-item
-                v-if="
-                  props.row.status == '伦理工作总结待提交' &&
-                  props.row.type == '0'
-                "
-                label="执行情况表"
-              >
-                <template slot-scope="scope">
-                  <el-upload
-                    class="upload"
-                    action="/api/file/upload"
-                    :headers="headers"
-                    :on-preview="handlePreview"
-                    :on-remove="handleRemove"
-                    :before-remove="beforeRemove"
-                    :on-success="uploadSummary"
-                    multiple
-                    accept=".pdf"
-                    :limit="1"
-                    :on-exceed="handleExceed"
-                    :file-list="fileList"
-                  >
-                    <el-button size="small" type="primary"
-                      >上传总结</el-button
-                    >
-                    <div slot="tip" class="el-upload__tip">只能上传pdf</div>
-                  </el-upload>
-                  <el-button
-                    size="medium"
-                    type="success"
-                    @click="articleProcessManagement(props.row.id)"
-                    >确认上传</el-button
-                  >
-                </template>
-              </el-form-item>
--->
-
               <el-form-item
                 v-if="
                   props.row.status.search('执行情况表') != -1 &&
@@ -442,7 +405,7 @@
           label="创建时间"
         ></el-table-column>
         <el-table-column prop="beginTime" label="开始时间"></el-table-column>
-        <!--<el-table-column width="75" prop="type" label="类型"></el-table-column>-->
+        <el-table-column width="75" prop="type" label="类型"></el-table-column>
         <el-table-column
           width="175"
           prop="status"
@@ -602,34 +565,34 @@
           </el-row>
           <!--经费来源-->
           <el-row>
-            <el-form-item label="经费来源(单选)">
+            <el-form-item label="经费来源">
               <el-col :span="12">
-                <el-checkbox-group v-model="form.temp">
-                  <el-checkbox
+                <el-checkbox-group v-model="form.temp" :max="1">
+                  <el-checkbox border
                     label="政府"
                     name="temp"
                     class="apply"
                     @click="fundingSource(0)"
                   ></el-checkbox>
-                  <el-checkbox
+                  <el-checkbox border
                     label="基金会"
                     name="temp"
                     class="apply"
                     @click="fundingSource(1)"
                   ></el-checkbox>
-                  <el-checkbox
+                  <el-checkbox border
                     label="公司"
                     name="temp"
                     class="apply"
                     @click="fundingSource(2)"
                   ></el-checkbox>
-                  <el-checkbox
+                  <el-checkbox border
                     label="国际组织"
                     name="temp"
                     class="apply"
                     @click="fundingSource(3)"
                   ></el-checkbox>
-                  <el-checkbox
+                  <el-checkbox border
                     label="其他"
                     name="temp"
                     class="apply"
@@ -1147,7 +1110,7 @@ export default {
             row.memberResList = res.data.data.memberResList;
             this.$refs.multipleTable.toggleRowExpansion(row, true);
             row.expanded=true;
-            console.log(row.memberResList)
+            //console.log(row.memberResList)
           } else this.$message.error(res.data.message);
         })
         .catch((err) => {

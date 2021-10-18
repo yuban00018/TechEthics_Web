@@ -3,18 +3,18 @@
     <!--<div id="tutorial-button01-father">
       <div id="tutorial-button01">{{tutorial_button01_data}}</div>
     </div>-->
-    <h1 id="title">申报指南</h1>
+    <h1 id="title" style="position:relative;margin:0 auto;top:50px;">申报指南</h1>
     <!--<div id="tutorial-title01">{{tutorial_title01_data}}</div>-->
     <!--<img id="tutorial_img01" v-bind:src="tutorial_img01_data.src"/>-->
-  <h2 style="position:relative;margin: 0 auto;top:150px;">申请创建</h2>
+  <h2 style="position:relative;margin: 0 auto;top:125px;">申请创建</h2>
   <div id="steps1">
   <el-steps :active="3" align-center :space="200">
     <el-step icon="el-icon-edit" title="申请人创建申请" description="文章/项目/其他申请"></el-step>
-    <el-step icon="el-icon-upload" title="申请人提交申请" description="进入我的申请页面提交申请"></el-step>
+    <el-step icon="el-icon-upload" title="申请人提交申请" description="自动生成申请表PDF"></el-step>
     <el-step icon="el-icon-s-check" title="进入审核流程"></el-step>
   </el-steps>
   </div>
-  <h2 style="position:relative;margin: 0 auto;top:225px;">审核</h2>
+  <h2 style="position:relative;margin: 0 auto;top:175px;">审核</h2>
   <div id="steps2">
   <el-steps :active="4" align-center :space="200">
     <el-step icon="el-icon-s-check" title="科研秘书初审"></el-step>
@@ -23,7 +23,7 @@
     <el-step icon="el-icon-document-checked" title="委员会出具审查同意书"></el-step>
   </el-steps>
   </div>
-  <h2 style="position:relative;margin: 0 auto;top:300px;">完成项目</h2>
+  <h2 style="position:relative;margin: 0 auto;top:250px;">完成项目</h2>
   <div id="steps3">
   <el-steps :active="3" align-center :space="200">
     <el-step icon="el-icon-upload" title="提交伦理执行情况表格"></el-step>
@@ -81,19 +81,19 @@ export default {
 }
 #steps1{
   position:relative;
-  top:180px;
+  top:150px;
   margin: 0 auto;
   width: 600px;
 }
 #steps2{
   position: relative;
   margin: 0 auto;
-  top:250px;
+  top:200px;
   width:800px;
 }
 #steps3{
   position: relative;
-  top:330px;
+  top:280px;
   margin: 0 auto;
   width: 600px;
 }

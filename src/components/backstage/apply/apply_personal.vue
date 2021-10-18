@@ -133,34 +133,34 @@
         </el-row>
         <!--经费来源-->
         <el-row>
-          <el-form-item label="经费来源(单选)">
+          <el-form-item label="经费来源">
             <el-col :span="12">
-              <el-checkbox-group v-model="form.temp">
-                <el-checkbox
+              <el-checkbox-group v-model="form.temp"  :max="1">
+                <el-checkbox border
                   label="政府"
                   name="temp"
                   class="apply"
                   @click="fundingSource(0)"
                 ></el-checkbox>
-                <el-checkbox
+                <el-checkbox border
                   label="基金会"
                   name="temp"
                   class="apply"
                   @click="fundingSource(1)"
                 ></el-checkbox>
-                <el-checkbox
+                <el-checkbox border
                   label="公司"
                   name="temp"
                   class="apply"
                   @click="fundingSource(2)"
                 ></el-checkbox>
-                <el-checkbox
+                <el-checkbox border
                   label="国际组织"
                   name="temp"
                   class="apply"
                   @click="fundingSource(3)"
                 ></el-checkbox>
-                <el-checkbox
+                <el-checkbox border
                   label="其他"
                   name="temp"
                   class="apply"

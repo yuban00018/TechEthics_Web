@@ -11,7 +11,7 @@
     </div>
 
     <div id="carousel_Map" @wheel.prevent="handleScroll1">
-      <el-carousel trigger="click"> 
+      <el-carousel trigger="click">
         <el-carousel-item v-for="item in imgList1" :key="item.name">
           <img :src="item.src" style="height:100%;width:100%;" />
         </el-carousel-item>
@@ -293,7 +293,7 @@ export default {
       // console.log(typeof(e.wheelDelta));
       if (e.wheelDelta == -120) {
         // var tmp = document.getElementById("mainbody_Interface");
-        // tmp.style.transition='width 2s'; 
+        // tmp.style.transition='width 2s';
 
         // var target = 'mainbody_Interface';
         // var target_roll_height = $('#' + target).offset().top;
@@ -325,7 +325,7 @@ export default {
   height: 13.3%;
   z-index: 10;
 }
-#title_Start:hover #background01 {
+#background01 {
   transition: all 0.3s ease-in;
   width: 100%;
   height: 125px;
@@ -336,19 +336,6 @@ export default {
   z-index: 9;
   opacity: 1;
 }
-#background01 {
-  transition: all 0.3s ease-in;
-  width: 100%;
-  height: 125px;
-  background-image: linear-gradient(#245086, #3375b6 90%);
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  z-index: 9;
-  opacity: 0.8;
-  transition: background-image 4s;
-  -webkit-transition:background-image 4s;
-}
 #picture01 {
   height: 150px;
   width: 22.4%;
@@ -358,12 +345,11 @@ export default {
   z-index: 10;
 }
 #title_text01 {
-  height: 40px;
   width: 20%;
   position: absolute;
-  left: 17.3%;
-  top: 45px;
-  font-size: 25px;
+  left: 18.5%;
+  top: 35px;
+  font-size: 35px;
   color: #fefefe;
   z-index: 10;
 }
@@ -372,7 +358,7 @@ export default {
   width: 7.3%;
   position: absolute;
   left: 62.5%;
-  top: 55px;
+  top: 40px;
   font-size: 20px;
   color: #fefefe;
   background: rgba(0, 0, 0, 0);
@@ -384,7 +370,7 @@ export default {
   width: 7.3%;
   position: absolute;
   left: 74.2%;
-  top: 55px;
+  top: 40px;
   font-size: 20px;
   color: #fefefe;
   background: rgba(0, 0, 0, 0);
@@ -396,7 +382,7 @@ export default {
   width: 7.3%;
   position: absolute;
   left: 85.9%;
-  top: 55px;
+  top: 40px;
   font-size: 20px;
   color: #fefefe;
   background: rgba(0, 0, 0, 0);
@@ -769,7 +755,7 @@ export default {
   top: 55px;
   width: 100%;
   height: 580px;
-} 
+}
 #background_fake {
   position: absolute;
   left: 0px;
@@ -906,7 +892,7 @@ export default {
     top: -300%;
     height: 937px;
     /* height: 1057px; */
-    background: url(../assets/knowledge_ethics_pic05.jpg) center center no-repeat; 
+    background: url(../assets/knowledge_ethics_pic05.jpg) center center no-repeat;
     background-size: cover;
         z-index: 9;
 }
@@ -957,7 +943,7 @@ export default {
     top: 468.5px;
     z-index: 9;
     background-color: #263E64;
-    background: url(../assets/SHU_pic05.jpg) center center no-repeat; 
+    background: url(../assets/SHU_pic05.jpg) center center no-repeat;
     background-size: cover;
 }
 #knowledge_Ethics_block01_id04 {
@@ -1008,7 +994,7 @@ export default {
     top: 234.25px;
     z-index: 9;
     background-color: #263D64;
-    background: url(../assets/SHU_pic02.jpg) center center no-repeat; 
+    background: url(../assets/SHU_pic02.jpg) center center no-repeat;
     background-size: cover;
 }
 #knowledge_Ethics_block01_id11 {
@@ -1024,7 +1010,7 @@ export default {
     top: 702.75px;
     z-index: 9;
     background-color: #466193;
-        background: url(../assets/SHU_pic07.jpg) center center no-repeat; 
+        background: url(../assets/SHU_pic07.jpg) center center no-repeat;
     background-size: cover;
 }
 #knowledge_Ethics_block01_id13 {
@@ -1047,7 +1033,7 @@ export default {
     top: 468.5px;
     z-index: 9;
     background-color: #416090;
-    background: url(../assets/SHU_pic03.jpg) center center no-repeat; 
+    background: url(../assets/SHU_pic03.jpg) center center no-repeat;
     background-size: cover;
 }
 #knowledge_Ethics_block01_id16 {
@@ -1098,7 +1084,7 @@ export default {
     top: 234.25px;
     z-index: 9;
     background-color: #314E7F;
-    background: url(../assets/SHU_pic04.jpg) center center no-repeat; 
+    background: url(../assets/SHU_pic04.jpg) center center no-repeat;
     background-size: cover;
 }
 #knowledge_Ethics_block01_id23 {

@@ -24,19 +24,29 @@
               <span>{{ props.row.institution }}</span>
             </el-form-item>
             <br />
-            <el-form-item label="学院秘书经办人">
+            <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!='none'">
               <span>{{ props.row.secretaryAgent }}</span>
             </el-form-item>
-            <el-form-item label="部门领导经办人">
+            <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!='none'">
               <span>{{ props.row.leaderAgent }}</span>
             </el-form-item>
-            <el-form-item label="委员长经办人">
+            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!='none'">
               <span>{{ props.row.chairmanAgent }}</span>
             </el-form-item>
-            <el-form-item label="委员经办人">
-              <span>{{ props.row.memberAgent }}</span>
-            </el-form-item>
             <br />
+            <!--委员经办人应当实现显示多个经办人-->
+            <el-form-item label="委员经办人" v-if="props.row.memberResList!=''">
+              <!--<span>{{ props.row.memberAgent }}</span>-->
+              <span v-for="member in props.row.memberResList">
+                  {{member.userId}}
+                  <span v-if="member.state==-2">未审批</span>
+                  <span v-if="member.state==-1">驳回</span>
+                  <span v-if="member.state==0">驳回修改</span>
+                  <span v-if="member.state==1">已批准</span>
+                  <br/>
+                </span>
+            </el-form-item>
+            <br v-if="props.row.memberResList!=''"/>
             <el-form-item label="预定的起止时间">
               <span>{{ props.row.scheduleTime }}</span>
             </el-form-item>
@@ -44,16 +54,16 @@
               <span>{{ props.row.creationTime }}</span>
             </el-form-item>
             <br />
-            <el-form-item label="申请同意时间">
+            <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
               <span>{{ props.row.beginTime }}</span>
             </el-form-item>
+            <!--
             <el-form-item label="执行期">
               <span>{{ props.row.executionTime }}</span>
-            </el-form-item>
-            <el-form-item label="结束时间">
+            </el-form-item>-->
+            <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
               <span>{{ props.row.endTime }}</span>
             </el-form-item>
-            <br />
             <el-form-item label="状态">
               <span>{{ props.row.status }}</span>
             </el-form-item>
@@ -191,6 +201,7 @@ export default {
             row.projectAbstract = res.data.data.projectAbstract;
             row.applicationFile = res.data.data.applicationFile;
             row.applicationPdf = res.data.data.applicationPdf;
+            row.memberResList = res.data.data.memberResList;
             row.id = res.data.data.id;
             this.$refs.multipleTable.toggleRowExpansion(row, true);
             row.expanded=true;

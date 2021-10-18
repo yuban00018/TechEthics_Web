@@ -11,7 +11,7 @@
   <el-menu-item v-if="!disableSecretary" @click="jmp('secretary_approve')" id="secretary" index="1">学院秘书审批</el-menu-item>
   <el-menu-item v-if="!disableLeader" @click="jmp('leader_approve')" id="leader" index="2">领导审批</el-menu-item>
   <el-menu-item v-if="!disableChairman" @click="jmp('chairman_approve')" id="chairman" index="3">系统管理员审批</el-menu-item>
-  <el-menu-item v-if="!disableMember" @click="jmp('member_approve')" id="member" index="4">委员审批</a></el-menu-item>
+  <el-menu-item v-if="!disableMember" @click="jmp('member_approve')" id="member" index="4">委员审批</el-menu-item>
 </el-menu>
     <div id="approve_type">
       <router-view></router-view>
