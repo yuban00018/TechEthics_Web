@@ -4,15 +4,15 @@ import router from '../router';
 
 axios.interceptors.request.use(function(config)
 {
-    const token = window.localStorage.getItem('token');
+    const token = window.localStorage.getItem('TokenKey');
     if(token){
-        config.headers.Authorization = localStorage.getItem('token');
+        config.headers.Authorization = localStorage.getItem('TokenKey');
     }
     return config;
 },(error)=>{
     router.replace('/login')
     if(error.response){
-        alert(error.response.status);
+        alert(error.response.data.message);
     }
     localStorage.clear();
     return Promise.reject(error);
@@ -24,7 +24,7 @@ axios.interceptors.response.use((res) => {
     console.log(Object.assign({},error))
     router.replace('/login')
     if(error.response){
-        alert(error.response.status);
+        alert(error.response.data.message);
     }
     localStorage.clear();
     return Promise.reject(error)
