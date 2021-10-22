@@ -177,7 +177,7 @@
                 v-if="
                   props.row.status.search('执行情况表') != -1 &&
                   props.row.status.search('待审核') == -1 &&
-                  props.row.type == '2'
+                  props.row.type == '其他'
                 "
                 label="执行情况表"
               >
@@ -202,9 +202,9 @@
               </el-form-item>
               <el-form-item
                 v-if="
-                  props.row.status.search('总结') != -1 &&
+                  props.row.status.search('总结') != -1&&
                   props.row.status.search('待审核') == -1 &&
-                  props.row.type == '2'
+                  props.row.type == '其他'
                 "
                 label="总结"
               >
@@ -232,7 +232,7 @@
                 v-if="
                   props.row.status.search('待提交') != -1 &&
                   props.row.status.search('跟踪') == -1 &&
-                  props.row.type == '2'
+                  props.row.type == '其他'
                 "
                 label=""
               >
@@ -247,7 +247,7 @@
               <el-form-item
                 v-if="
                   props.row.status == '执行情况表待提交' &&
-                  props.row.type == '0'
+                  props.row.type == '文章'
                 "
                 label="执行情况表"
               >
@@ -284,7 +284,7 @@
                 v-if="
                   props.row.status.search('执行情况表') != -1 &&
                   props.row.status.search('待审核') == -1 &&
-                  props.row.type == '1'
+                  props.row.type == '项目'
                 "
                 label="执行情况表"
               >
@@ -311,7 +311,7 @@
                 v-if="
                   props.row.status.search('总结') != -1 &&
                   props.row.status.search('待审核') == -1 &&
-                  props.row.type == '1'
+                  props.row.type == '项目'
                 "
                 label="总结"
               >
@@ -339,7 +339,7 @@
                 v-if="
                   props.row.status.search('待提交') != -1 &&
                   props.row.status.search('跟踪') == -1 &&
-                  props.row.type == '1'
+                  props.row.type == '项目'
                 "
                 label=""
               >
