@@ -45,6 +45,13 @@
           <span @click="jmp('tutorial')">申报指南</span>
         </template>
       </el-menu-item>
+      <el-menu-item @click="jmp('application')" index="1">
+        <template slot="title">
+          <i class="el-icon-edit-outline"></i>
+          <span @click="jmp('application')">申请</span>
+        </template>
+      </el-menu-item>
+      <!-- 旧版申请
       <el-submenu index="2">
         <template slot="title">
         <i class="el-icon-edit-outline"></i>
@@ -56,9 +63,10 @@
           <el-menu-item @click="jmp('apply_other')" index="2-2">其他申请</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item @click="jmp('myapplications')" index="3">
+      -->
+      <el-menu-item @click="jmp('applications')" index="3">
         <i class="el-icon-notebook-2"></i>
-        <span @click="jmp('myapplications')" slot="title">我的申请</span>
+        <span @click="jmp('applications')" slot="title">我的申请</span>
       </el-menu-item>
       <el-menu-item @click="jmp('approve')" v-if="!hideApprove" index="4">
         <i class="el-icon-s-check"></i>

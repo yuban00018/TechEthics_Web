@@ -1,5 +1,5 @@
 <template>
-  <div class="bg">
+  <div class="bg" >
     <div>
       <el-form
         ref="form"
@@ -29,6 +29,20 @@
             <el-col :span="12">
               <el-input v-model="form.name"></el-input>
             </el-col>
+          </el-form-item>
+        </el-row>
+        <!--申请类型-->
+        <el-row>
+          <el-form-item
+            label="项目类型"
+            id="application_type"
+          >
+        <el-checkbox-group
+          style="text-align: left"
+          v-model="application_type"
+          :max="1">
+          <el-checkbox border v-for="type in applicationType" :label="type" :key="type">{{type}}</el-checkbox>
+        </el-checkbox-group>
           </el-form-item>
         </el-row>
         <!--起止日期-->
@@ -63,9 +77,8 @@
         </el-row>
         <!--项目类别-->
         <el-row>
-          <el-form-item label="项目类别">
+          <el-form-item label="项目类别" style="text-align: left">
             <el-radio-group v-model="watch_project_type">
-              <div style="position: absolute;left:-6px;top: 0px;">
                 <el-col :span="20">
                   <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
                   <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
@@ -81,7 +94,6 @@
                     id="apply_program_programInput"
                   ></el-input>
                 </el-col>
-              </div>
             </el-radio-group>
           </el-form-item>
         </el-row>
@@ -137,8 +149,7 @@
         <el-row>
           <el-form-item label="经费来源">
             <el-col :span="12">
-              <el-checkbox-group v-model="form.temp" :max="1">
-                <div style="position:absolute; left:0px;">
+              <el-checkbox-group v-model="form.temp" :max="1" style="text-align: left">
                   <el-checkbox border
                                label="政府"
                                name="temp"
@@ -169,7 +180,6 @@
                                class="apply"
                                @click="fundingSource(4)"
                   ></el-checkbox>
-                </div>
               </el-checkbox-group>
             </el-col>
           </el-form-item>
@@ -208,30 +218,192 @@
                 accept=".rar,.zip,.7z"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
+                style="text-align: left"
               >
-                <div style="position:absolute;left:0px;top:0px;">
                   <el-button type="primary">项目附件(压缩包)</el-button>
-                </div>
               </el-upload>
             </el-col>
           </el-form-item>
         </el-row>
       </el-form>
-      <div style="position:absolute;left:-20px;margin-top:5px;">
-        <el-button type="success" id="submitButton" @click="Submit"
-        >提交申请
-        </el-button>
-      </div>
+      <el-button type="success" id="submitButton" @click="Submit" style="position:absolute;left: 160px;"
+      >提交申请
+      </el-button>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import {submit} from "../../../utils/application";
+
 export default {
-  name: "application"
+  name: "apply_program_test",
+  mounted() {
+    this.confirm_notice()
+  },
+  watch: {
+    Watch_project_type(val) {
+      switch (val) {
+        case 'A.新药物临床实验':
+          this.form.project_type = '新药物临床实验';
+          this.disable_type_input = true;
+          this.project_typeE = "";
+          break;
+        case 'B.新器械临床实验':
+          this.form.project_type = '新器械临床实验';
+          this.disable_type_input = true;
+          this.project_typeE = "";
+          break;
+        case 'C.新技术应用':
+          this.form.project_type = '新技术应用';
+          this.disable_type_input = true;
+          this.project_typeE = "";
+          break;
+        case 'D.人体标本收集':
+          this.form.project_type = '人体标本收集';
+          this.disable_type_input = true;
+          this.project_typeE = "";
+          break;
+        case 'E.其他（请注明）':
+          this.form.project_type = this.project_typeE;
+          this.disable_type_input = false;
+          break;
+      }
+    }
+  },
+  computed: {
+    headers() {
+      return {
+        Authorization: localStorage.getItem("TokenKey"),
+      }
+    },
+    Watch_project_type() {
+      return this.watch_project_type;
+    }
+  },
+  data() {
+    return {
+      applicationType: ['文章', '项目', '其他'],
+      application_type: [],
+      fileList: [],
+      disable_type_input: true,
+      project_typeE: "",
+      watch_project_type: "",
+      form: {
+        institution: localStorage.getItem("institution"),
+        name: "",
+        time1: "",
+        time2: "",
+        office_phone: localStorage.getItem("office_phone"),
+        fax: localStorage.getItem("fax"),
+        phone: localStorage.getItem("phone"),
+        email: localStorage.getItem("email"),
+        project_direction: "",
+        project_abstract: "",
+        type: 0,//这个是funding source但我不知道为什么被命名为type了，请千万注意！！！
+        temp: [],
+        project_type: "",
+        desc: "",
+        application_file: "",
+        apply:-1,
+      },
+    };
+  },
+  methods: {
+    confirm_notice() {
+      let data = ['1、 本部伦理审查所有环节均不收取任何费用', '2、 本部伦理审查范围：', '（1） 拟开展的实验项目（项目申报阶段）;'
+        , '3、 完成整个审查流程一般需要10个工作日，如信息不完整或申请表填写问题较多时，审查时间将会延长，因此请申请人务必按要求认真准备申请材料，如有问题请及时邮件沟通。',
+        '4、 附件要求：', '（1） 按申请表内容提供有关附件；', '（2） 根据审查意见提供其他有关材料；'];
+      let newDatas = [];
+      const h = this.$createElement;
+      for (let i in data) {
+        newDatas.push(h('p', null, data[i]));
+      }
+      this.$alert(h('div', null, newDatas), '申请须知', {
+        showClose: false,
+        confirmButtonText: '同意',
+        callback: action => {
+          this.$message({
+            type: 'info',
+            message: `您已同意须知`
+          });
+        }
+      });
+    },
+    //文本改变事件
+    change(event) {
+      this.$forceUpdate();
+      this.form.project_type = this.project_typeE;
+    },
+    //信息本地保存
+    saveInfo() {
+      localStorage.setItem("email", this.form.email);
+      localStorage.setItem("fax", this.form.fax);
+      localStorage.setItem("id", this.form.id);
+      localStorage.setItem("institution", this.form.institution);
+      localStorage.setItem("name", this.form.name);
+      localStorage.setItem("office_phone", this.form.office_phone);
+      localStorage.setItem("phone", this.form.phone);
+    },
+    handleSuccess(response, file, fileList) {
+      this.form.application_file = response.data;
+    },
+    handleRemove(file, fileList) {
+      this.form.application_file = null;
+    },
+    handlePreview(file) {
+      console.log(file.name);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    Submit: function () {
+      this.saveInfo();
+      if (this.form.application_file == "") {
+        this.$message.error('您忘记上传文件了!');
+        return;
+      }
+      switch (this.application_type[0]) {
+        case '文章':
+          this.form.apply = 0
+          break;
+        case '项目':
+          this.form.apply = 1
+          break;
+        case '其他':
+          this.form.apply = 2
+          break;
+      }
+      submit(this.form).then(res => {
+          if (res.data.code == 200) {
+            this.saveInfo();
+            this.$message({
+              message: '成功，请在我的申请中提交项目',
+              type: 'success'
+            });
+            this.$router.replace("/backstage/applications").catch((err) => {
+              this.$message.error(err);
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+    },
+    fundingSource: function (choice) {
+      this.form.type = choice;
+    },
+  }
 }
 </script>
 
-<style scoped>
-
+<style>
 </style>

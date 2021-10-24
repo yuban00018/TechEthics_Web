@@ -59,10 +59,6 @@
               <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
                 <span>{{ props.row.beginTime }}</span>
               </el-form-item>
-              <!--
-              <el-form-item label="执行期">
-                <span>{{ props.row.executionTime }}</span>
-              </el-form-item>-->
               <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
                 <span>{{ props.row.endTime }}</span>
               </el-form-item>

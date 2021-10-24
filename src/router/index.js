@@ -2,10 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import tutorial from '@/views/backstage/tutorial/tutorial'
 import approve from '@/views/backstage/approve/approve'
-import apply_program from '@/views/backstage/apply/apply_program'
-import apply_personal from '@/views/backstage/apply/apply_personal'
-import apply_other from '@/views/backstage/apply/apply_other'
-import myapplications from '@/views/backstage/myapplications/myapplications'
 import login from '@/views/login/login'
 import member_approve from '@/views/backstage/approve/approves/member_approve'
 import chairman_approve from '@/views/backstage/approve/approves/chairman_approve'
@@ -39,21 +35,6 @@ export default new Router({
         component: resolve=>require(['@/views/backstage/tutorial/tutorial'],resolve)
       },
       {
-        path: 'apply_program',
-        name:'apply_program',
-        component: resolve=>require(['@/views/backstage/apply/apply_program'],resolve)
-      },
-      {
-        path: 'apply_other',
-        name:'apply_other',
-        component: resolve=>require(['@/views/backstage/apply/apply_other'],resolve)
-      },
-      {
-        path: 'apply_personal',
-        name:'apply_personal',
-        component: resolve=>require(['@/views/backstage/apply/apply_personal'],resolve)
-      },
-      {
         path: 'application',
         name:'application',
         component: resolve=>require(['@/views/backstage/apply/application'],resolve)
@@ -83,11 +64,6 @@ export default new Router({
           component:resolve=>require(['@/views/backstage/approve/approves/secretary_approve'],resolve)
         },
       ]
-      },
-      {
-        path: 'myapplications',
-        name:'myapplications',
-        component: resolve=>require(['@/views/backstage/myapplications/myapplications'],resolve)
       },
       {
         path: 'applications',
