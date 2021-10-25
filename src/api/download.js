@@ -8,7 +8,7 @@ function Download(url) {
   url = url.replace(/\\/g,"/");
     return request({
       method: "GET",
-      url: "/file/download?fileAddress=" + url,
+      url: "/api/file/download?fileAddress=" + url,
       data: {},
       responseType: "blob",
     })
