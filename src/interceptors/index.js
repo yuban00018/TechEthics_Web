@@ -24,7 +24,8 @@ axios.interceptors.response.use((res) => {
     console.log(Object.assign({},error))
     router.replace('/login')
     if(error.response){
-        alert(error.response.status);
+      console.log(error.response)
+        alert(error.response.statusText);
     }
     localStorage.clear();
     return Promise.reject(error)

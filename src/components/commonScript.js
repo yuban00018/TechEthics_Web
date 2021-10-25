@@ -5,6 +5,7 @@ function Download(url) {
       Message.error("请在点击提交后重试");
       return;
     }
+    url = url.replace(/\\/g,"/");
     axios({
       method: "get",
       url: "/file/download?fileAddress=" + url,
