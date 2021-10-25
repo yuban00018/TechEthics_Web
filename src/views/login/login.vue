@@ -5,12 +5,12 @@
     <div id="hint"><br />登录<br /><p style="font-size:15px;position:relative;left:28%;">您正在登陆到: 上海大学伦理审批系统</p></div>
       <el-input v-model="userId" placeholder="userId" /><br />
       <el-input v-model="password" type="password" placeholder="password" /><br />
-      <el-button id="loginButton" @click="login()" type="primary">登录</el-button>
+      <el-button id="loginButton" @click="Login()" type="primary">登录</el-button>
     </div>
   </div>
 </template>
 <script>
-import axios from "axios";
+import {login} from "@/utils/login";
 import {setToken} from "@/utils/auth"
 export default {
   name: "login",
@@ -21,15 +21,8 @@ export default {
     };
   },
   methods: {
-    login: function () {
-      axios({
-        method: "post",
-        url: "/login",
-        data: {
-          password: this.password,
-          userId: this.userId,
-        },
-      })
+    Login: function () {
+      login(this.password, this.userId)
         .then((res) => {
           if (res.data.code === 200) {
             //console.log("test")

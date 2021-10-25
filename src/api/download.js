@@ -1,12 +1,13 @@
 import { Message } from 'element-ui';
-import axios from 'axios';
+import request from "@/utils/request";
 function Download(url) {
     if (url == "" || url == null) {
       Message.error("请在点击提交后重试");
       return;
     }
-    axios({
-      method: "get",
+  url = url.replace(/\\/g,"/");
+    return request({
+      method: "GET",
       url: "/file/download?fileAddress=" + url,
       data: {},
       responseType: "blob",

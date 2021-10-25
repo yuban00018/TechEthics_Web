@@ -126,7 +126,7 @@
 
 <script>
 import axios from "axios";
-import { Download } from "@/api/commonScript.js";
+import { Download } from "@/api/download.js";
 export default {
   name: "leader_approve",
   data() {

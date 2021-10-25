@@ -1,4 +1,6 @@
 <template>
+  <!--引用自vue-admin-template-->
+  <!--https://github.com/PanJiaChen/vue-admin-template-->
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">

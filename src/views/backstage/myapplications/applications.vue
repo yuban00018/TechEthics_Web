@@ -1,6 +1,6 @@
 <template>
   <div>
-    <detail :visible="dialogVisible" :details="dialogDetail"></detail>
+    <detail :visible.sync="dialogVisible" :details="dialogDetail"></detail>
       <el-table
         v-loading="listLoading"
         :data="projectList.userApplicationList"

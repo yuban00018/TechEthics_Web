@@ -3,7 +3,7 @@ import { MessageBox, Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-  timeout: 5000
+  timeout: 10000,
 })
 
 // request interceptor
@@ -26,7 +26,7 @@ service.interceptors.response.use(
     // if the custom code is not 200, it is judged as an error.
     if (res.data.code !== 200) {
       Message({
-        message: res.data.message || 'Error',
+        message: res.data.data.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })}

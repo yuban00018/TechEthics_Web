@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Router from 'router';
 import router from '../router';
 
 axios.interceptors.request.use(function(config)
