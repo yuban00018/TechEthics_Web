@@ -3,6 +3,7 @@ import { MessageBox, Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
+  baseUrl: '/api',
   timeout: 10000,
 })
 

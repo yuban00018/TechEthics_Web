@@ -1,9 +1,9 @@
 import request from "@/utils/request";
 import axios from "axios";
 export function login(password,userId){
-  return request({
+  return axios({
             method: "POST",
-            url: "/api/login",
+            url: "/login",
             data: {
               password: password,
               userId: userId,
