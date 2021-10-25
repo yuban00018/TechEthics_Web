@@ -2,7 +2,7 @@ import request from '@/utils/request.js'
 
 export function submit(form) {
   return request({
-    url:'/api/user/createApplicationForProjectDemo',
+    url:'/user/createApplicationForProjectDemo',
     method:'post',
     data:{
       application_file: form.application_file,

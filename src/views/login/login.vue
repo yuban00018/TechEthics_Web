@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import {login} from "@/utils/login";
+import {login} from "@/api/login";
 import {setToken} from "@/utils/auth"
 export default {
   name: "login",

@@ -3,7 +3,7 @@
     <el-dialog
       :title='details.name'
       :visible.sync="dialog_visible"
-      width="80%"
+      width="60%"
     >
     <el-descriptions direction="vertical" class="margin-top" :column="3" border>
       <template slot="extra">

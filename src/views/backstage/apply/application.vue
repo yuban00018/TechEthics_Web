@@ -235,7 +235,7 @@
 
 <script>
 import axios from "axios";
-import {submit} from "../../../utils/application";
+import {submit} from "@/api/application";
 
 export default {
   name: "apply_program_test",

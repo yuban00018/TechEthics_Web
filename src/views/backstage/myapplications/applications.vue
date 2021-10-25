@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import {getList,getDetail} from "@/utils/applications";
+import {getList,getDetail} from "@/api/applications";
 import Detail from "./detail";
 import axios from "axios";
 
