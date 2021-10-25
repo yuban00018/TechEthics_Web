@@ -1,4 +1,3 @@
-import request from "@/utils/request";
 import axios from "axios";
 export function login(password,userId){
   return axios({

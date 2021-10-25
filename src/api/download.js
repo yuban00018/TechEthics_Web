@@ -1,5 +1,4 @@
 import { Message } from 'element-ui';
-import request from "@/utils/request";
 import axios from "axios";
 function Download(url) {
     if (url == "" || url == null) {

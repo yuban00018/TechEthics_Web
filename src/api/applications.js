@@ -1,14 +1,13 @@
-import request from '@/utils/request.js'
-import axios from "axios";
+import axios from "axios"
 
 export function getList() {
-  return request({
+  return axios({
     url:'/user/applicationList',
     method:'GET',
   })
 }
 export function getDetail(row){
-  return request({
+  return axios({
     method: "GET",
     url: "/user/applicationInfo?applicationId=" + row.id,
     data: {},

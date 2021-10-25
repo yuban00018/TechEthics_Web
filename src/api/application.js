@@ -1,7 +1,7 @@
-import request from '@/utils/request.js'
+import axios from "axios"
 
 export function submit(form) {
-  return request({
+  return axios({
     url:'/user/createApplicationForProjectDemo',
     method:'post',
     data:{
