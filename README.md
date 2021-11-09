@@ -1,6 +1,8 @@
-# shuethicalapprovalsystem
+# 伦理审批系统
 
-> shu_ethical_approval_system_web
+伦理审批系统前端，目前正在重构，见refactor分支。
+
+后端和数据库都是私有项目无法公开，见谅。
 
 ## Build Setup
 
