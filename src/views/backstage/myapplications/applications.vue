@@ -1,7 +1,7 @@
 <template>
   <div>
     <detail :visible.sync="dialogVisible" :details="dialogDetail"></detail>
-      <el-table
+    <el-table
         v-loading="listLoading"
         :data="projectList.userApplicationList"
         border
@@ -25,11 +25,7 @@
         ></el-table-column>
         <el-table-column prop="beginTime" width="200" label="开始时间"></el-table-column>
         <el-table-column width="75" prop="type" label="类型"></el-table-column>
-        <el-table-column
-          width="175"
-          prop="status"
-          label="状态"
-        ></el-table-column>
+        <el-table-column width="175" prop="status" label="状态"></el-table-column>
         <el-table-column width="80" fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" @click="show_details(scope.row)">详情</el-button>
@@ -42,7 +38,6 @@
 <script>
 import {getList,getDetail} from "@/api/applications";
 import Detail from "./detail";
-import axios from "axios";
 
 export default {
   name: "applications",
@@ -54,7 +49,7 @@ export default {
   },
   data() {
     return {
-      projectList: "",
+      projectList: {userApplicationList: null},
       listLoading: true,
       dialogVisible: false,
       dialogDetail:[],
@@ -68,8 +63,13 @@ export default {
       this.listLoading = true
       getList()
         .then(res=>{
-        this.projectList = res.data.data;
-        this.listLoading = false;
+          if(res.data.code===500){
+            this.listLoading = false;
+          }
+          else if(res.data.code===200){
+            this.projectList = res.data.data;
+            this.listLoading = false;
+          }
       })
         .catch((err) => {this.$message.error(err);});
     },

@@ -226,20 +226,28 @@
           </el-form-item>
         </el-row>
       </el-form>
-      <el-button type="success" id="submitButton" @click="Submit" style="position:absolute;left: 160px;"
+      <el-button v-if="form.application_id===-1" type="success" id="submitButton" @click="Submit" style="position:absolute;left: 160px;"
       >提交申请
+      </el-button>
+      <el-button v-if="form.application_id!==0" type="warning" id="submitButton" @click="Update" style="position:absolute;left: 160px;"
+      >修改并提交
       </el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {submit} from "@/api/application";
+import {submit,update} from "@/api/application";
+import axios from "axios";
 
 export default {
   name: "apply_program_test",
   mounted() {
     this.confirm_notice()
+    console.log(this.$route.query)
+    this.form.application_id=Number(this.$route.query.applicationId);
+    if(this.$route.query==={})this.form.application_id=-1;
+    else {this.getProjectInfo();}
   },
   watch: {
     Watch_project_type(val) {
@@ -306,10 +314,30 @@ export default {
         desc: "",
         application_file: "",
         apply:-1,
+        application_id:0,
       },
     };
   },
   methods: {
+    getProjectInfo: function () {
+      axios({
+        method: "get",
+        url: "/user/applicationInfo?applicationId=" + this.form.application_id,
+        data: {},
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.form.institution = res.data.data.institution;
+            this.form.name = res.data.data.name;
+            this.form.project_direction = res.data.data.direction;
+            this.form.project_abstract = res.data.data.projectAbstract;
+            this.form.application_file = res.data.data.applicationFile;
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+    },
     confirm_notice() {
       let data = ['1、 本部伦理审查所有环节均不收取任何费用', '2、 本部伦理审查范围：', '（1） 拟开展的实验项目（项目申报阶段）;'
         , '3、 完成整个审查流程一般需要10个工作日，如信息不完整或申请表填写问题较多时，审查时间将会延长，因此请申请人务必按要求认真准备申请材料，如有问题请及时邮件沟通。',
@@ -393,6 +421,39 @@ export default {
             });
           } else this.$message.error(res.data.message);
         })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+    },
+    Update: function (){
+      this.saveInfo();
+      if (this.form.application_file === "") {
+        this.$message.error('您忘记上传文件了!');
+        return;
+      }
+      switch (this.application_type[0]) {
+        case '文章':
+          this.form.apply = 0
+          break;
+        case '项目':
+          this.form.apply = 1
+          break;
+        case '其他':
+          this.form.apply = 2
+          break;
+      }
+      update(this.form).then(res => {
+        if (res.data.code === 200) {
+          this.saveInfo();
+          this.$message({
+            message: '修改成功，请在我的申请中提交项目',
+            type: 'success'
+          });
+          this.$router.replace("/backstage/applications").catch((err) => {
+            this.$message.error(err);
+          });
+        } else this.$message.error(res.data.message);
+      })
         .catch((err) => {
           this.$message.error(err);
         });
