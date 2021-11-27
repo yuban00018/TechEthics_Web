@@ -234,7 +234,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import {submit} from "@/api/application";
 
 export default {
@@ -367,7 +366,7 @@ export default {
     },
     Submit: function () {
       this.saveInfo();
-      if (this.form.application_file == "") {
+      if (this.form.application_file === "") {
         this.$message.error('您忘记上传文件了!');
         return;
       }
@@ -383,7 +382,7 @@ export default {
           break;
       }
       submit(this.form).then(res => {
-          if (res.data.code == 200) {
+          if (res.data.code === 200) {
             this.saveInfo();
             this.$message({
               message: '成功，请在我的申请中提交项目',
