@@ -26,29 +26,29 @@
                 <span>{{ props.row.institution }}</span>
               </el-form-item>
               <br />
-              <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!='none'">
+              <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!=='none'">
                 <span>{{ props.row.secretaryAgent }}</span>
               </el-form-item>
-              <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!='none'">
+              <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!=='none'">
                 <span>{{ props.row.leaderAgent }}</span>
               </el-form-item>
-              <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!='none'">
+              <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!=='none'">
                 <span>{{ props.row.chairmanAgent }}</span>
               </el-form-item>
               <br />
               <!--委员经办人应当实现显示多个经办人-->
-              <el-form-item label="委员经办人" v-if="props.row.memberResList!=''">
+              <el-form-item label="委员经办人" v-if="props.row.memberResList!==''">
                 <!--<span>{{ props.row.memberAgent }}</span>-->
                 <span v-for="member in props.row.memberResList">
                   {{member.userId}}
-                  <span v-if="member.state==-2">未审批</span>
-                  <span v-if="member.state==-1">驳回</span>
-                  <span v-if="member.state==0">驳回修改</span>
-                  <span v-if="member.state==1">已批准</span>
+                  <span v-if="member.state===-2">未审批</span>
+                  <span v-if="member.state===-1">驳回</span>
+                  <span v-if="member.state===0">驳回修改</span>
+                  <span v-if="member.state===1">已批准</span>
                   <br/>
                 </span>
               </el-form-item>
-              <br v-if="props.row.memberResList!=''"/>
+              <br v-if="props.row.memberResList!==''"/>
               <el-form-item label="预定的起止时间">
                 <span>{{ props.row.scheduleTime }}</span>
               </el-form-item>
@@ -56,16 +56,16 @@
                 <span>{{ props.row.creationTime }}</span>
               </el-form-item>
               <br />
-              <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
+              <el-form-item label="申请同意时间" v-if="props.row.beginTime!==''">
                 <span>{{ props.row.beginTime }}</span>
               </el-form-item>
-              <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
+              <el-form-item label="结束时间"  v-if="props.row.endTime!==''">
                 <span>{{ props.row.endTime }}</span>
               </el-form-item>
               <br />
               <el-form-item
                 v-if="
-                  props.row.rejectReason != '' && props.row.rejectReason != null
+                  props.row.rejectReason !== '' && props.row.rejectReason != null
                 "
                 label="驳回原因"
               >
@@ -87,21 +87,21 @@
                   >下载PDF</el-button
                 >
                 <el-button
-                  :disabled="props.row.executeInfo == ''"
+                  :disabled="props.row.executeInfo === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.executeInfo)"
                   >下载执行情况表格</el-button
                 >
                 <el-button
-                  :disabled="props.row.summary == ''"
+                  :disabled="props.row.summary === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.summary)"
                   >下载总结</el-button
                 >
                 <el-button
-                  :disabled="props.row.trackFile == ''"
+                  :disabled="props.row.trackFile === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.trackFile)"
@@ -111,9 +111,8 @@
               <br />
               <el-form-item
                 v-if="
-                  props.row.status == '未提交' || props.row.status == '驳回修改'
+                  props.row.status === '未提交' || props.row.status === '驳回修改'
                 "
-                label
               >
                 <template slot-scope="scope">
                   <el-button
@@ -143,8 +142,8 @@
               <br />
               <el-form-item
                 v-if="
-                  props.row.status == '确认项目状态' ||
-                  props.row.status == '暂未立项'
+                  props.row.status === '确认项目状态' ||
+                  props.row.status === '暂未立项'
                 "
                 label="项目状态确认"
               >
@@ -171,9 +170,9 @@
 
               <el-form-item
                 v-if="
-                  props.row.status.search('执行情况表') != -1 &&
-                  props.row.status.search('待审核') == -1 &&
-                  props.row.type == '其他'
+                  props.row.status.search('执行情况表') !== -1 &&
+                  props.row.status.search('待审核') === -1 &&
+                  props.row.type === '其他'
                 "
                 label="执行情况表"
               >
@@ -198,9 +197,9 @@
               </el-form-item>
               <el-form-item
                 v-if="
-                  props.row.status.search('总结') != -1&&
-                  props.row.status.search('待审核') == -1 &&
-                  props.row.type == '其他'
+                  props.row.status.search('总结') !== -1&&
+                  props.row.status.search('待审核') === -1 &&
+                  props.row.type === '其他'
                 "
                 label="总结"
               >
@@ -226,9 +225,9 @@
 
               <el-form-item
                 v-if="
-                  props.row.status.search('待提交') != -1 &&
-                  props.row.status.search('跟踪') == -1 &&
-                  props.row.type == '其他'
+                  props.row.status.search('待提交') !== -1 &&
+                  props.row.status.search('跟踪') === -1 &&
+                  props.row.type === '其他'
                 "
                 label=""
               >
@@ -242,8 +241,8 @@
 
               <el-form-item
                 v-if="
-                  props.row.status == '执行情况表待提交' &&
-                  props.row.type == '文章'
+                  props.row.status === '执行情况表待提交' &&
+                  props.row.type === '文章'
                 "
                 label="执行情况表"
               >
@@ -278,9 +277,9 @@
 
               <el-form-item
                 v-if="
-                  props.row.status.search('执行情况表') != -1 &&
-                  props.row.status.search('待审核') == -1 &&
-                  props.row.type == '项目'
+                  props.row.status.search('执行情况表') !== -1 &&
+                  props.row.status.search('待审核') === -1 &&
+                  props.row.type === '项目'
                 "
                 label="执行情况表"
               >
@@ -305,9 +304,9 @@
               </el-form-item>
               <el-form-item
                 v-if="
-                  props.row.status.search('总结') != -1 &&
-                  props.row.status.search('待审核') == -1 &&
-                  props.row.type == '项目'
+                  props.row.status.search('总结') !== -1 &&
+                  props.row.status.search('待审核') === -1 &&
+                  props.row.type === '项目'
                 "
                 label="总结"
               >
@@ -333,9 +332,9 @@
 
               <el-form-item
                 v-if="
-                  props.row.status.search('待提交') != -1 &&
-                  props.row.status.search('跟踪') == -1 &&
-                  props.row.type == '项目'
+                  props.row.status.search('待提交') !== -1 &&
+                  props.row.status.search('跟踪') === -1 &&
+                  props.row.type === '项目'
                 "
                 label=""
               >
@@ -348,7 +347,7 @@
               </el-form-item>
 
               <el-form-item
-                v-if="props.row.status == '跟踪情况表待提交'"
+                v-if="props.row.status === '跟踪情况表待提交'"
                 label="跟踪情况表"
               >
                 <template slot-scope="scope">
@@ -493,7 +492,7 @@
           <el-row>
             <el-form-item label="项目类别">
               <el-radio-group v-model="watch_project_type">
-                <div style="position: absolute;left:-6px;top: 0px;">
+                <div style="position: absolute;left:-6px;top: 0;">
                   <el-col :span="20">
                     <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
                     <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
@@ -566,7 +565,7 @@
             <el-form-item label="经费来源">
               <el-col :span="12">
                 <el-checkbox-group v-model="form.temp" :max="1">
-                  <div style="position:absolute; left:0px;">
+                  <div style="position:absolute; left:0;">
                     <el-checkbox border
                                  label="政府"
                                  name="temp"
@@ -637,7 +636,7 @@
                   :on-exceed="handleExceed"
                   :file-list="fileList"
                 >
-                  <div style="position:absolute;left:0px;top:0px;">
+                  <div style="position:absolute;left:0;top:0;">
                     <el-button type="primary">项目附件(压缩包)</el-button>
                   </div>
                 </el-upload>
@@ -834,7 +833,7 @@ export default {
       this.load();
     },
     articleProcessManagement: function (id) {
-      if (this.ExecuteInfo == "") {
+      if (this.ExecuteInfo === "") {
         this.$message.error("您忘记上传文件了!");
         return;
       }
@@ -884,7 +883,7 @@ export default {
         });
     },
     Update: function () {
-      if (this.form.application_file == "") {
+      if (this.form.application_file === "") {
         this.$message.error("您忘记上传文件了!");
         return;
       }
@@ -927,7 +926,7 @@ export default {
         },
       })
         .then((res) => {
-          if (res.data.code == 200) {
+          if (res.data.code === 200) {
             this.$message({
               message: "成功",
               type: "success",

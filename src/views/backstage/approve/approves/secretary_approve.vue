@@ -24,29 +24,29 @@
               <span>{{ props.row.institution }}</span>
             </el-form-item>
             <br />
-            <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!='none'">
+            <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!=='none'">
               <span>{{ props.row.secretaryAgent }}</span>
             </el-form-item>
-            <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!='none'">
+            <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!=='none'">
               <span>{{ props.row.leaderAgent }}</span>
             </el-form-item>
-            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!='none'">
+            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!=='none'">
               <span>{{ props.row.chairmanAgent }}</span>
             </el-form-item>
             <br />
             <!--委员经办人应当实现显示多个经办人-->
-            <el-form-item label="委员经办人" v-if="props.row.memberResList!=''">
+            <el-form-item label="委员经办人" v-if="props.row.memberResList!==''">
               <!--<span>{{ props.row.memberAgent }}</span>-->
               <span v-for="member in props.row.memberResList">
                   {{member.userId}}
-                  <span v-if="member.state==-2">未审批</span>
-                  <span v-if="member.state==-1">驳回</span>
-                  <span v-if="member.state==0">驳回修改</span>
-                  <span v-if="member.state==1">已批准</span>
+                  <span v-if="member.state===-2">未审批</span>
+                  <span v-if="member.state===-1">驳回</span>
+                  <span v-if="member.state===0">驳回修改</span>
+                  <span v-if="member.state===1">已批准</span>
                   <br/>
                 </span>
             </el-form-item>
-            <br v-if="props.row.memberResList!=''"/>
+            <br v-if="props.row.memberResList!==''"/>
             <el-form-item label="预定的起止时间">
               <span>{{ props.row.scheduleTime }}</span>
             </el-form-item>
@@ -54,14 +54,14 @@
               <span>{{ props.row.creationTime }}</span>
             </el-form-item>
             <br />
-            <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
+            <el-form-item label="申请同意时间" v-if="props.row.beginTime!==''">
               <span>{{ props.row.beginTime }}</span>
             </el-form-item>
             <!--
             <el-form-item label="执行期">
               <span>{{ props.row.executionTime }}</span>
             </el-form-item>-->
-            <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
+            <el-form-item label="结束时间"  v-if="props.row.endTime!==''">
               <span>{{ props.row.endTime }}</span>
             </el-form-item>
             <el-form-item label="状态">
@@ -82,7 +82,7 @@
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
-                  :disabled="props.row.applicationFile == ''"
+                  :disabled="props.row.applicationFile === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.applicationFile)"
@@ -139,7 +139,7 @@ export default {
   },
   methods: {
     approval: function(row, choice) {
-      if(this.textarea==''&&(choice==-1||choice==0)){
+      if(this.textarea===''&&(choice===-1||choice===0)){
                       this.$message.error('未填写驳回原因');return;}
       axios({
         method: "post",

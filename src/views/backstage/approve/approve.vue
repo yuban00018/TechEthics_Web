@@ -32,7 +32,7 @@ export default {
     };
   },
   mounted() {
-    var identities = JSON.parse(localStorage.getItem('identity'));
+    const identities = JSON.parse(localStorage.getItem('identity'));
     if (identities.includes('学院秘书'))this.disableSecretary=false;
     if (identities.includes('部门领导'))this.disableLeader=false;
     if (identities.includes('委员长'))this.disableChairman=false;
@@ -51,20 +51,10 @@ export default {
 };
 </script>
 <style scoped>
-#top {
-  width: 100%;
-  height: 40px;
-  background-color: #b1d5fa;
-  position: absolute;
-  display: block;
-  font-size: 0px;
-  top: 0%;
-  left: 0%;
-}
 #approve_type {
   width: 100%;
   top: 100px;
-  bottom: 0px;
+  bottom: 0;
   position: absolute;
 }
 </style>

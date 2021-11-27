@@ -10,16 +10,20 @@ import secretary_approve from '@/views/backstage/approve/approves/secretary_appr
 
 Vue.use(Router)
 
+//解决编程式路由往同一地址跳转时会报错的情况
+const originalReplace = Router.prototype.replace;
+//replace
+Router.prototype.replace = function push(location, onResolve, onReject) {
+  if (onResolve || onReject)
+    return originalReplace.call(this, location, onResolve, onReject);
+  return originalReplace.call(this, location).catch(err => err);
+};
+
 export default new Router({
   mode:'history',
   routes: [
     {
-      path: '',
-      name: 'login',
-      component: resolve=>require(['@/views/login/login'],resolve)
-    },
-    {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: resolve=>require(['@/views/login/login'],resolve)
     },
@@ -69,7 +73,7 @@ export default new Router({
         path: 'applications',
         name:'applications',
         component: resolve=>require(['@/views/backstage/myapplications/applications'],resolve)
-      }
+      },
     ]
     },
     {path: '*', component: resolve=>require(['@/views/404'],resolve)}

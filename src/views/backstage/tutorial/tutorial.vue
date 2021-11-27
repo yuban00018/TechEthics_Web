@@ -1,11 +1,6 @@
 <template>
   <div id="whiteBG">
-    <!--<div id="tutorial-button01-father">
-      <div id="tutorial-button01">{{tutorial_button01_data}}</div>
-    </div>-->
     <h1 id="title" style="position:relative;margin:0 auto;top:50px;">申报指南</h1>
-    <!--<div id="tutorial-title01">{{tutorial_title01_data}}</div>-->
-    <!--<img id="tutorial_img01" v-bind:src="tutorial_img01_data.src"/>-->
   <h2 style="position:relative;margin: 0 auto;top:125px;">申请创建</h2>
   <div id="steps1">
   <el-steps :active="3" align-center :space="200">
@@ -47,35 +42,6 @@ export default {
 </script>
 
 <style scoped>
-#tutorial-button01-father {
-  display: flex;
-  position: absolute;
-  top: 5%;
-  left: 8%;
-  width: 8%;
-  height: 4%;
-  background-color: #245086;
-}
-#tutorial-button01 {
-  color: #ffffff;
-  font-size: 88%;
-  margin: auto;
-}
-#tutorial-title01 {
-  position: absolute;
-  top: 2.5%;
-  left: 33%;
-  width: 30%;
-  height: 4%;
-  font-size: 32px;
-}
-#tutorial_img01 {
-  position: absolute;
-  top: 10%;
-  left: 20%;
-  width: 55%;
-  height: 85%;
-}
 #steps1{
   position:relative;
   top:150px;
@@ -95,7 +61,7 @@ export default {
   width: 600px;
 }
 #whiteBG{
-  background-image: linear-gradient(white);
+  background-image: linear-gradient(white,white);
   width: 100%;
   height:100%;
   position:absolute;

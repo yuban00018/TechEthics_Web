@@ -2,32 +2,9 @@
 <template>
   <div id="backstage_bg">
     <div id="darkblue_bg">
-      <img id="shu_badge" src="@/assets/shu_pic.png" />
+      <img id="shu_badge" src="@/assets/shu_pic.png"  alt=""/>
       <div id="info">欢迎: {{information}}</div>
-      <el-button size="mini" id="changeInfo" type="text" @click="changeInfoDialogVisible = true">修改信息</el-button>
-      <el-dialog
-      title="修改个人信息"
-      :visible.sync="changeInfoDialogVisible"
-      width="25%"
-      append-to-body
-      >
-      <el-form label-width="100px" :model="infoForm">
-        <el-form-item label="邮箱">
-          <el-input v-model="infoForm.email"></el-input>
-          </el-form-item>
-          <el-form-item label="传真">
-            <el-input v-model="infoForm.fax"></el-input>
-            </el-form-item>
-            <el-form-item label="移动电话">
-              <el-input v-model="infoForm.mobilePhone"></el-input>
-              </el-form-item>
-              <el-form-item label="办公室电话">
-              <el-input v-model="infoForm.officePhone"></el-input>
-              </el-form-item>
-              </el-form>
-              <el-button size="mini" type="primary" @click="updateInfo()">确认修改</el-button>
-      </el-dialog>
-      <el-button size="mini" @click="logout()" type="primary" id="logout">退出登录</el-button>
+      <el-button size="mini" @click="logout()" type="primary" id="logoutButton">退出登录</el-button>
     </div>
     <div id="el-sidebar">
     <el-menu
@@ -51,19 +28,6 @@
           <span @click="jmp('application')">申请</span>
         </template>
       </el-menu-item>
-      <!-- 旧版申请
-      <el-submenu index="2">
-        <template slot="title">
-        <i class="el-icon-edit-outline"></i>
-        <span>申请</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item @click="jmp('apply_program')" index="2-1">项目申请</el-menu-item>
-          <el-menu-item @click="jmp('apply_personal')" index="2-2">文章申请</el-menu-item>
-          <el-menu-item @click="jmp('apply_other')" index="2-2">其他申请</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-      -->
       <el-menu-item @click="jmp('applications')" index="3">
         <i class="el-icon-notebook-2"></i>
         <span @click="jmp('applications')" slot="title">我的申请</span>
@@ -94,7 +58,7 @@ export default {
   },
   mounted() {
     this.info_update();
-    var identities = JSON.parse(localStorage.getItem('identity'));
+    const identities = JSON.parse(localStorage.getItem('identity'));
     if (
       !identities.includes("普通用户")
      ) this.hideApprove = false;
@@ -135,14 +99,6 @@ export default {
           this.$message.error(err);
         });
     },
-    jmp_apply: function (path,type) {
-      this.$router.replace(
-        "/backstage/" + path,
-        {type:type}
-      ).catch((err) => {
-        err;
-      });
-    },
     jmp: function (path) {
       this.$router.replace("/backstage/" + path).catch((err) => {
         err;
@@ -172,7 +128,7 @@ export default {
     logout() {
       localStorage.clear();
       this.$router.push("/").catch((err) => {
-        err;
+        this.$message.error(err);
       });
     },
   },
@@ -186,13 +142,13 @@ export default {
 <style scoped>
 #info {
   width: 200px;
-  right: 15%;
+  right: 10%;
   top: 36px;
   font-size: 18px;
   position: absolute;
   color: white;
 }
-button#logout {
+button#logoutButton {
   background: rgba(0, 0, 0, 0);
   height: 10%;
   width: 5%;
@@ -201,19 +157,7 @@ button#logout {
   top: 32px;
   font-size: 18px;
   color: white;
-  border: 0px;
-  z-index: 5;
-}
-button#changeInfo {
-  background: rgba(0, 0, 0, 0);
-  height: 10%;
-  width: 5%;
-  position: absolute;
-  right: 10%;
-  top: 32px;
-  font-size: 18px;
-  color: white;
-  border: 0px;
+  border: 0;
   z-index: 5;
 }
 #darkblue_bg {
@@ -221,26 +165,26 @@ button#changeInfo {
   height: 100px;
   background-image: linear-gradient(#245086,#245086);
   position: absolute;
-  top: 0%;
-  left: 0%;
+  top: 0;
+  left: 0;
   z-index: -1;
 }
 #shu_badge {
   height: 120%;
   width: 216px;
   position: absolute;
-  top: 0%;
-  left: 0%;
+  top: 0;
+  left: 0;
   z-index: 2;
 }
 .el-menu--popup {
 width: 200px;
 }
 #el-sidebar{
-  bottom: 0px;
+  bottom: 0;
   width: 200px;
   top: 100px;
-  left: 0%;
+  left: 0;
   position: absolute;
   background-image: linear-gradient(#f0f8fa,#f0f8fa);
 }
@@ -249,8 +193,8 @@ width: 200px;
   position: absolute;
   left: 200px;
   top: 100px;
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
+  right: 0;
   overflow: auto;
 }
 </style>

@@ -21,43 +21,43 @@
             <el-form-item label="项目单位">
               <span>{{ props.row.institution }}</span> </el-form-item
             ><br />
-            <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!='none'">
+            <el-form-item label="学院秘书经办人" v-if="props.row.secretaryAgent!=='none'">
               <span>{{ props.row.secretaryAgent }}</span>
             </el-form-item>
-            <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!='none'">
+            <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!=='none'">
               <span>{{ props.row.leaderAgent }}</span>
             </el-form-item>
-            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!='none'">
+            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!=='none'">
               <span>{{ props.row.chairmanAgent }}</span>
             </el-form-item>
             <br />
             <!--委员经办人应当实现显示多个经办人-->
-            <el-form-item label="委员经办人" v-if="props.row.memberResList!=''">
+            <el-form-item label="委员经办人" v-if="props.row.memberResList!==''">
               <!--<span>{{ props.row.memberAgent }}</span>-->
               <span v-for="member in props.row.memberResList">
                   {{member.userId}}
-                  <span v-if="member.state==-2">未审批</span>
-                  <span v-if="member.state==-1">驳回</span>
-                  <span v-if="member.state==0">驳回修改</span>
-                  <span v-if="member.state==1">已批准</span>
+                  <span v-if="member.state===-2">未审批</span>
+                  <span v-if="member.state===-1">驳回</span>
+                  <span v-if="member.state===0">驳回修改</span>
+                  <span v-if="member.state===1">已批准</span>
                   <br/>
                 </span>
             </el-form-item>
-            <br v-if="props.row.memberResList!=''"/>
+            <br v-if="props.row.memberResList!==''"/>
             <el-form-item label="预定的起止时间">
               <span>{{ props.row.scheduleTime }}</span>
             </el-form-item>
             <el-form-item label="申请创建时间">
               <span>{{ props.row.creationTime }}</span> </el-form-item
             ><br />
-            <el-form-item label="申请同意时间" v-if="props.row.beginTime!=''">
+            <el-form-item label="申请同意时间" v-if="props.row.beginTime!==''">
               <span>{{ props.row.beginTime }}</span>
             </el-form-item>
             <!--
             <el-form-item label="执行期">
               <span>{{ props.row.executionTime }}</span>
             </el-form-item>-->
-            <el-form-item label="结束时间"  v-if="props.row.endTime!=''">
+            <el-form-item label="结束时间"  v-if="props.row.endTime!==''">
               <span>{{ props.row.endTime }}</span>
             </el-form-item>
             <br />
@@ -79,36 +79,36 @@
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
-                  :disabled="props.row.applicationFile == ''"
+                  :disabled="props.row.applicationFile === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.applicationFile)"
                   >下载附件</el-button
                 >
                 <el-button
-                  :disabled="props.row.applicationPdf == ''"
+                  :disabled="props.row.applicationPdf === ''"
                   size="mini"
                   type="primary"
                   @click="download(props.row.applicationPdf)"
                   >下载PDF</el-button
                 >
-                <div v-if="props.row.status != '委员长终审'">
+                <div v-if="props.row.status !== '委员长终审'">
                   <el-button
-                    :disabled="props.row.executeInfo == ''"
+                    :disabled="props.row.executeInfo === ''"
                     size="mini"
                     type="primary"
                     @click="download(props.row.executeInfo)"
                     >下载执行情况表格</el-button
                   >
                   <el-button
-                    :disabled="props.row.summary == ''"
+                    :disabled="props.row.summary === ''"
                     size="mini"
                     type="primary"
                     @click="download(props.row.summary)"
                     >下载总结</el-button
                   >
                   <el-button
-                    :disabled="props.row.trackFile == ''"
+                    :disabled="props.row.trackFile === ''"
                     size="mini"
                     type="primary"
                     @click="download(props.row.trackFile)"
@@ -121,10 +121,10 @@
             <el-form-item
               label=""
               v-if="
-                props.row.status == '执行情况表与总结待审核' ||
-                props.row.status == '执行情况表待审核' ||
-                props.row.status == '跟踪情况表待审核' ||
-                props.row.status == '伦理工作总结待审核'
+                props.row.status === '执行情况表与总结待审核' ||
+                props.row.status === '执行情况表待审核' ||
+                props.row.status === '跟踪情况表待审核' ||
+                props.row.status === '伦理工作总结待审核'
               "
             >
               <!--按钮，无名称-->
@@ -144,7 +144,7 @@
               </template>
             </el-form-item>
             <br />
-            <el-form-item label v-if="props.row.status == '委员长终审'">
+            <el-form-item v-if="props.row.status === '委员长终审'">
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button
@@ -275,13 +275,13 @@ export default {
   },
   methods: {
     handleSelectionChange(val) {
-      console.log(val);
-      for (var i = 0; i < val.length; i++) {
+      //console.log(val);
+      for (let i = 0; i < val.length; i++) {
         this.value[i] = val[i]["userId"];
       }
     },
     approvalTrack: function (applicationId, method) {
-      if (this.textarea == "" && method == -1) {
+      if (this.textarea === "" && method === -1) {
         this.$message.error("未填写驳回原因");
         return;
       }
@@ -310,13 +310,13 @@ export default {
       this.load();
     },
     confirm(applicationId, method) {
-      if (this.textarea == "" && method == -1) {
+      if (this.textarea === "" && method === -1) {
         this.$message.error("未填写驳回原因");
         return;
       }
       this.$confirm(
         "您确定要" +
-          (method == 1 ? "批准" : "驳回") +
+          (method === 1 ? "批准" : "驳回") +
           "项目：" +
           applicationId +
           "吗？",
@@ -367,7 +367,7 @@ export default {
       this.load();
     },
     confirmReject: function (applicationId, method) {
-      if (this.textarea == "" && method != 1) {
+      if (this.textarea === "" && method !== 1) {
         this.$message.error("未填写驳回原因");
         return;
       }
