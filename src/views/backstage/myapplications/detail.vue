@@ -23,7 +23,7 @@
         >
           <!--执行情况表-->
           <el-button
-          :disabled="details.executeInfo === ''"
+          v-if="details.executeInfo === ''"
           size="mini"
           type="primary"
           @click="download(details.executeInfo)"
@@ -31,7 +31,7 @@
         >
           <!--总结-->
           <el-button
-          :disabled="details.summary === ''"
+          v-if="details.summary === ''"
           size="mini"
           type="primary"
           @click="download(details.summary)"
@@ -39,7 +39,7 @@
         >
           <!--后跟踪文件-->
           <el-button
-          :disabled="details.trackFile === ''"
+          v-if="details.trackFile === ''"
           size="mini"
           type="primary"
           @click="download(details.trackFile)"
@@ -107,7 +107,7 @@
       </el-descriptions>
 
       <br>
-      <div id="uploadPanel" v-if="details.status === '未提交' || details.status === '驳回修改'">
+      <div v-if="details.status === '未提交' || details.status === '驳回修改'">
         <el-button
           size="mini"
           type="success"
@@ -124,13 +124,196 @@
           @click="del(details.id)"
         >删除</el-button>
       </div>
+      <div v-if="details.status === '确认项目状态' || details.status === '暂未立项'">
+        <el-select
+          size="mini"
+          v-model="value"
+          filterable
+          placeholder="确认项目状态"
+        >
+          <el-option
+            v-for="item in status_options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="confirmStatus(details.id)"
+        >确认项目状态</el-button
+        >
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('执行情况表') !== -1 &&
+                 details.status.search('待审核') === -1 &&
+                 details.type === '其他'">
+        <el-upload
+          class="upload"
+          action="/api/file/upload"
+          :headers="headers"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          :on-success="uploadExecuteInfo"
+          multiple
+          accept=".pdf"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary"
+          >上传执行情况表</el-button
+          >
+        </el-upload>
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('总结') !== -1&&
+                 details.status.search('待审核') === -1 &&
+                 details.type === '其他'">
+          <el-upload
+            class="upload"
+            action="/api/file/upload"
+            :headers="headers"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-success="uploadSummary"
+            multiple
+            accept=".pdf"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary">上传总结</el-button>
+          </el-upload>
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('待提交') !== -1 &&
+                 details.status.search('跟踪') === -1 &&
+                 details.type === '其他'">
+        <el-button
+          size="medium"
+          type="success"
+          @click="othersProcessManagement(details.id)"
+        >确认上传</el-button
+        >
+      </div>
+      <div v-if="details.status === '执行情况表待提交' && details.type === '文章'">
+          <el-upload
+            class="upload"
+            action="/api/file/upload"
+            :headers="headers"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-success="uploadExecuteInfo"
+            multiple
+            accept=".pdf"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary">上传执行情况表</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传pdf</div>
+          </el-upload>
+          <el-button
+            size="medium"
+            type="success"
+            @click="articleProcessManagement(details.id)"
+          >确认上传</el-button
+          >
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('执行情况表') !== -1 &&
+                 details.status.search('待审核') === -1 &&
+                 details.type === '项目'">
+        <el-upload
+          class="upload"
+          action="/api/file/upload"
+          :headers="headers"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          :on-success="uploadExecuteInfo"
+          multiple
+          accept=".pdf"
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary"
+          >上传执行情况表</el-button
+          >
+        </el-upload>
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('总结') !== -1 &&
+                 details.status.search('待审核') === -1 &&
+                 details.type === '项目'">
+          <el-upload
+            class="upload"
+            action="/api/file/upload"
+            :headers="headers"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-success="uploadSummary"
+            multiple
+            accept=".pdf"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary">上传总结</el-button>
+          </el-upload>
+      </div>
+      <div v-if="dialog_visible &&
+                 details.status.search('待提交') !== -1 &&
+                 details.status.search('跟踪') === -1 &&
+                 details.type === '项目'">
+        <el-button
+          size="medium"
+          type="success"
+          @click="projectProcessManagement(details.id)"
+        >确认上传</el-button
+        >
+      </div>
+      <div v-if="details.status === '跟踪情况表待提交'">
+          <el-upload
+            class="upload"
+            action="/api/file/upload"
+            :headers="headers"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-success="uploadTrackFile"
+            multiple
+            accept=".pdf"
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary"
+            >上传跟踪情况表</el-button
+            >
+            <div slot="tip" class="el-upload__tip">只能上传pdf</div>
+          </el-upload>
+          <el-button
+            size="medium"
+            type="success"
+            @click="trackManagement(details.id)"
+          >确认上传</el-button
+          >
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import { Download } from "@/api/download.js";
-import { Submit,Delete } from "@/api/detail.js";
+import {Submit, Delete, Confirm, projectManagement, Track, otherManagement, articleManagement} from "@/api/detail.js";
 export default {
   props:['visible','details'],
   name:"detail",
@@ -142,17 +325,129 @@ export default {
       this.$emit('update:visible', val);
     }
   },
+  computed: {
+    headers() {
+      return {
+        Authorization: localStorage.getItem("TokenKey"),
+      };
+    }
+  },
   data() {
     return {
+      trackFile:'',
+      ExecuteInfo:'',
+      summary:'',
+      fileList: [],
+      projectList: "",
+      value: "",
+      status_options: [
+        {
+          value: 0,
+          label: "暂未立项",
+        },
+        {
+          value: 1,
+          label: "未获批",
+        },
+        {
+          value: 2,
+          label: "获批资助",
+        },
+      ],
       memberList:'',
       dialog_visible: false,
     };
   },
   methods: {
-    download: function (url) {
+    load(){
+      this.ExecuteInfo = ""
+      this.summary = ""
+      this.dialog_visible=false;
+    },
+    uploadSummary(response, file, fileList) {
+      this.summary = response.data;
+    },
+    projectProcessManagement(id) {
+      projectManagement(id,this.ExecuteInfo,this.summary).then((res) => {
+        if (res.data.code === 200) {
+          this.$message({
+            message: "成功",
+            type: "success",
+          });
+        } else this.$message.error(res.data.message);
+      })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    othersProcessManagement(id) {
+      otherManagement(id,this.ExecuteInfo,this.summary)
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    articleProcessManagement(id) {
+      if (this.ExecuteInfo === "") {
+        this.$message.error("您忘记上传文件了!");
+        return;
+      }
+      articleManagement(id,this.ExecuteInfo).then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    trackManagement(id) {
+      Track(this.trackFile,id).then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else this.$message.error(res.data.message);
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    confirmStatus(id) {
+      Confirm(id,this.value).then((res) => {
+          if (res.data.code === 200) {
+            this.$message({
+              message: "成功",
+              type: "success",
+            });
+          } else {
+            this.$message.error(res.data.message);
+          }
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
+      this.load();
+    },
+    download(url) {
       Download(url);
     },
-    submit: function (id) {
+    submit(id) {
       Submit(id).then((res) => {
         if (res.data.code === 200) {
           this.$message({
@@ -163,8 +458,9 @@ export default {
       }).catch((err) => {
           this.$message.error(err);
       });
+      this.load();
     },
-    del: function (id){
+    del(id){
       Delete(id).then((res) => {
         if (res.data.code === 200) {
           this.$message({
@@ -176,19 +472,41 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
+      this.load();
     },
-    modify: function (id) {
+    modify(id) {
       this.$router.replace({ path: 'application', query: { applicationId: id }})
         .catch((err) => {
         this.$message.error(err);
         });
+      this.load();
+    },
+    uploadTrackFile(response, file, fileList) {
+      this.trackFile = response.data;
+    },
+    uploadExecuteInfo(response, file, fileList) {
+      this.ExecuteInfo = response.data;
+    },
+    handleSuccess(response, file, fileList) {
+      this.form.application_file = response.data;
+    },
+    handleRemove(file, fileList) {
+    },
+    handlePreview(file) {
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
     },
   }
 };
 </script>
 
-<style scoped>
-#uploadPanel{
-  text-align: right;
-}
+<style>
 </style>
