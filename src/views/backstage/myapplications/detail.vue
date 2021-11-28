@@ -23,7 +23,7 @@
         >
           <!--执行情况表-->
           <el-button
-          v-if="details.executeInfo === ''"
+          v-if="details.executeInfo !== ''"
           size="mini"
           type="primary"
           @click="download(details.executeInfo)"
@@ -31,7 +31,7 @@
         >
           <!--总结-->
           <el-button
-          v-if="details.summary === ''"
+          v-if="details.summary !== ''"
           size="mini"
           type="primary"
           @click="download(details.summary)"
@@ -39,7 +39,7 @@
         >
           <!--后跟踪文件-->
           <el-button
-          v-if="details.trackFile === ''"
+          v-if="details.trackFile !== ''"
           size="mini"
           type="primary"
           @click="download(details.trackFile)"
