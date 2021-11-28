@@ -206,21 +206,23 @@
           <el-form-item label="附件上传">
             <el-col :span="4">
               <el-upload
+                ref="uploadPDF"
                 class="upload-demo"
                 action="/api/file/upload"
                 :headers="headers"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
+                :on-error="handleError"
                 :before-remove="beforeRemove"
                 :on-success="handleSuccess"
                 multiple
                 :limit="1"
-                accept=".rar,.zip,.7z"
+                accept=".pdf"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
                 style="text-align: left"
               >
-                  <el-button type="primary">项目附件(压缩包)</el-button>
+                  <el-button type="primary">项目附件(多个文件请合并成一个pdf)</el-button>
               </el-upload>
             </el-col>
           </el-form-item>
@@ -323,7 +325,12 @@ export default {
     };
   },
   methods: {
-    getProjectInfo: function () {
+    handleError(){
+      this.$message.error(
+        '上传失败，请检查网络'
+      );
+    },
+    getProjectInfo() {
       axios({
         method: "get",
         url: "/user/applicationInfo?applicationId=" + this.form.application_id,
@@ -378,6 +385,11 @@ export default {
       localStorage.setItem("phone", this.form.phone);
     },
     handleSuccess(response, file, fileList) {
+      if(response.code===400){
+        this.$message.error(response.message);
+        this.$refs['uploadPDF'].clearFiles();
+        return;
+      }
       this.form.application_file = response.data;
     },
     handleRemove(file, fileList) {
