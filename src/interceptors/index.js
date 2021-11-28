@@ -9,7 +9,7 @@ axios.interceptors.request.use(function(config)
     }
     return config;
 },(error)=>{
-    router.replace('/login')
+    router.replace('/')
     if(error.response){
         alert(error.response.data.message);
     }
@@ -21,7 +21,7 @@ axios.interceptors.response.use((res) => {
     return res;
 },(error)=>{
     console.log(Object.assign({},error))
-    router.replace('/login')
+    router.replace('/')
     if(error.response){
         alert(error.response.data.message);
     }
