@@ -226,10 +226,10 @@
           </el-form-item>
         </el-row>
       </el-form>
-      <el-button v-if="form.application_id===-1" type="success" id="submitButton" @click="Submit" style="position:absolute;left: 160px;"
+      <el-button v-if="this.form.application_id===-1" type="success" @click="Submit" style="position:absolute;left: 160px;"
       >提交申请
       </el-button>
-      <el-button v-if="form.application_id!==0" type="warning" id="submitButton" @click="Update" style="position:absolute;left: 160px;"
+      <el-button v-if="this.form.application_id!==-1" type="warning" @click="Update" style="position:absolute;left: 160px;"
       >修改并提交
       </el-button>
     </div>
@@ -244,10 +244,14 @@ export default {
   name: "apply_program_test",
   mounted() {
     this.confirm_notice()
-    console.log(this.$route.query)
     this.form.application_id=Number(this.$route.query.applicationId);
-    if(this.$route.query==={})this.form.application_id=-1;
-    else {this.getProjectInfo();}
+    if(isNaN(Number(this.$route.query.applicationId))){
+      this.form.application_id=-1;
+    }
+    else {
+      this.getProjectInfo();
+    }
+    console.log(this.form.application_id)
   },
   watch: {
     Watch_project_type(val) {
@@ -314,7 +318,7 @@ export default {
         desc: "",
         application_file: "",
         apply:-1,
-        application_id:0,
+        application_id:-1,
       },
     };
   },
