@@ -7,44 +7,23 @@
     >
       <el-descriptions title="基本信息" direction="vertical" class="margin-top" :column="3" border>
         <template slot="extra">
-          <!--附件-->
-          <el-button
-          size="mini"
-          type="primary"
-          @click="download(details.applicationFile)"
-        >下载附件</el-button
-        >
-          <!--PDF-->
-          <el-button
-          size="mini"
-          type="primary"
-          @click="download(details.applicationPdf)"
-        >下载PDF</el-button
-        >
-          <!--执行情况表-->
-          <el-button
-          v-if="details.executeInfo !== null"
-          size="mini"
-          type="primary"
-          @click="download(details.executeInfo)"
-        >下载执行情况表格</el-button
-        >
-          <!--总结-->
-          <el-button
-          v-if="details.summary !== null"
-          size="mini"
-          type="primary"
-          @click="download(details.summary)"
-        >下载总结</el-button
-        >
-          <!--后跟踪文件-->
-          <el-button
-          v-if="details.trackFile !== null"
-          size="mini"
-          type="primary"
-          @click="download(details.trackFile)"
-        >下载后跟踪文件</el-button
-        >
+          <div v-if="details.status === '未提交' || details.status === '驳回修改'">
+            <el-button
+              size="mini"
+              type="success"
+              @click="submit(details.id)"
+            >提交</el-button>
+            <el-button
+              size="mini"
+              type="warning"
+              @click="modify(details.id)"
+            >修改</el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              @click="del(details.id)"
+            >删除</el-button>
+          </div>
         </template>
         <el-descriptions-item label="项目类别">
         <template slot="label"><i class="el-icon-tickets"></i>项目类别</template>
@@ -71,9 +50,9 @@
         {{details.chairmanAgent}}
       </el-descriptions-item>
         <el-descriptions-item v-for="member in details.memberResList" :key="member.userId" label="委员经办人">
-        <template slot="label"><i class="el-icon-user"></i>委员经办人</template>
-        {{member.userId}} {{member.state===-2?"未审批":''}} {{member.state===-1?"驳回":''}} {{member.state===0?"驳回修改":''}} {{member.state===1?"已批准":''}}
-      </el-descriptions-item>
+          <template slot="label"><i class="el-icon-user"></i>委员经办人</template>
+          {{member.userId}} {{member.state===-2?"未审批":''}} {{member.state===-1?"驳回":''}} {{member.state===0?"驳回修改":''}} {{member.state===1?"已批准":''}}
+        </el-descriptions-item>
       </el-descriptions>
 
       <el-descriptions title="日期信息" direction="vertical" class="margin-top" :column="4" border>
@@ -101,29 +80,56 @@
         {{details.projectAbstract}}
       </el-descriptions-item>
         <el-descriptions-item label="驳回理由" v-if="details.rejectReason !== '' && details.rejectReason != null">
-        <template slot="label"><i class="el-icon-user"></i>驳回理由</template>
-        {{details.rejectReason}}
-      </el-descriptions-item>
+          <template slot="label"><i class="el-icon-user"></i>驳回理由</template>
+          {{details.rejectReason}}
+        </el-descriptions-item>
       </el-descriptions>
 
+      <el-descriptions title="附件下载" direction="horizontal" class="margin-top" :column="2" border>
+        <el-descriptions-item v-for="pdf in details.application_pdfs" :key="pdf.name" label="文件">
+          <template slot="label">申请材料</template>
+          {{pdf.name}}
+          <div>
+            <el-button @click="preview(pdf.url)" type="text">预览</el-button>
+            <el-button @click="download(pdf.url)" type="text">下载</el-button>
+          </div>
+        </el-descriptions-item>
+        <el-descriptions-item label="申请表">
+          <template slot="label">申请表</template>
+          上海大学伦理审查申请表.pdf <br>
+          <el-button @click="preview(details.applicationPdf)" type="text">预览</el-button>
+          <el-button type="text" @click="download(details.applicationPdf)">下载</el-button>
+        </el-descriptions-item>
+        <el-descriptions-item label="执行情况表格" v-if="details.executeInfo !== null">
+          <template slot="label">申请表</template>
+          上海大学伦理审查执行情况表格.pdf <br>
+          <el-button @click="preview(details.executeInfo)" type="text">预览</el-button>
+          <el-button type="text" @click="download(details.executeInfo)">下载</el-button>
+        </el-descriptions-item>
+        <el-descriptions-item label="总结" v-if="details.summary !== null">
+          <template slot="label">总结</template>
+          上海大学伦理审查总结.pdf <br>
+          <el-button @click="preview(details.summary)" type="text">预览</el-button>
+          <el-button type="text" @click="download(details.summary)">下载</el-button>
+        </el-descriptions-item>
+        <el-descriptions-item label="总结" v-if="details.trackFile !== null">
+          <template slot="label">后跟踪文件</template>
+          上海大学伦理审查后跟踪文件.pdf <br>
+          <el-button @click="preview(details.trackFile)" type="text">预览</el-button>
+          <el-button type="text" @click="download(details.trackFile)">下载</el-button>
+        </el-descriptions-item>
+      </el-descriptions>
+
+      <!--后跟踪文件-->
+      <el-button
+        v-if="details.trackFile !== null"
+        size="mini"
+        type="primary"
+        @click="download(details.trackFile)"
+      >下载后跟踪文件</el-button
+      >
+
       <br>
-      <div v-if="details.status === '未提交' || details.status === '驳回修改'">
-        <el-button
-          size="mini"
-          type="success"
-          @click="submit(details.id)"
-        >提交</el-button>
-        <el-button
-          size="mini"
-          type="warning"
-          @click="modify(details.id)"
-        >修改</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="del(details.id)"
-        >删除</el-button>
-      </div>
       <div v-if="details.status === '确认项目状态' || details.status === '暂未立项'">
         <el-select
           size="mini"
@@ -312,7 +318,7 @@
 </template>
 
 <script>
-import { Download } from "@/api/download.js";
+import {Download, Preview} from "@/api/download.js";
 import {Submit, Delete, Confirm, projectManagement, Track, otherManagement, articleManagement} from "@/api/detail.js";
 export default {
   props:['visible','details'],
@@ -363,6 +369,9 @@ export default {
       this.ExecuteInfo = ""
       this.summary = ""
       this.dialog_visible=false;
+    },
+    preview(url){
+      Preview(url);
     },
     uploadSummary(response, file, fileList) {
       this.summary = response.data;

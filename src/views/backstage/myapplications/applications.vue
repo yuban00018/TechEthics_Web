@@ -92,7 +92,18 @@ export default {
           row.direction = res.data.data.direction;
           row.fundingSource = res.data.data.fundingSource;
           row.projectAbstract = res.data.data.projectAbstract;
-          row.applicationFile = res.data.data.applicationFile;
+          let applicationPdfs = []
+          if(res.data.data.applicationPdf1!==""&&res.data.data.applicationPdf1!==null)
+            applicationPdfs.push(res.data.data.applicationPdf1);
+          if(res.data.data.applicationPdf2!==""&&res.data.data.applicationPdf2!==null)
+            applicationPdfs.push(res.data.data.applicationPdf2);
+          if(res.data.data.applicationPdf3!==""&&res.data.data.applicationPdf3!==null)
+            applicationPdfs.push(res.data.data.applicationPdf3);
+          row.application_pdfs = []
+          applicationPdfs.forEach(pdf=>{
+            console.log(pdf.slice(pdf.search("---") + 3));
+            row.application_pdfs.push({'name':pdf.slice(pdf.search("---") + 3),'url':pdf});
+          })
           row.rejectReason = res.data.data.rejectReason;
           row.applicationPdf = res.data.data.applicationPdf;
           row.executeInfo = res.data.data.executeInfo;

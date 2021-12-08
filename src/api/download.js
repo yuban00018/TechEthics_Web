@@ -1,7 +1,7 @@
 import { Message } from 'element-ui';
 import axios from "axios";
 export function Download(url) {
-    if (url == "" || url == null) {
+    if (url === "" || url == null) {
       Message.error("请在点击提交后重试");
       return;
     }
@@ -26,11 +26,12 @@ export function Download(url) {
   }
 
 export function Preview(url){
-  if (url == "" || url == null) {
+  if (url === "" || url == null) {
     Message.error("请在点击提交后重试");
     return;
   }
   url = url.replace(/\\/g,"/");
   url = encodeURIComponent("http://localhost:8888/api/file/preview?fileAddress="+ url);
   window.open("/static/plugins/pdfjs/web/viewer.html?file="+url);
+  return;
 }

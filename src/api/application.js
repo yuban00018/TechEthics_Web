@@ -5,7 +5,9 @@ export function submit(form) {
     url:'/user/createApplicationForProjectDemo',
     method:'post',
     data:{
-      application_file: form.application_file,
+      application_pdf1: form.application_pdfs[0],
+      application_pdf2: form.application_pdfs[1],
+      application_pdf3: form.application_pdfs[2],
       application_type: form.apply,
       email: form.email,
       fax: form.fax,
@@ -29,7 +31,9 @@ export function update(form) {
     method: "post",
     url: "/user/updateApplicationDemoForProject",
     data: {
-      application_file: form.application_file,
+      application_pdf1: form.application_pdfs[0],
+      application_pdf2: form.application_pdfs[1],
+      application_pdf3: form.application_pdfs[2],
       application_type: form.apply, //项目类型可修改，待增加按钮
       email: form.email,
       fax: form.fax,

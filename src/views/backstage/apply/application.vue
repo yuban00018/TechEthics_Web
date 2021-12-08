@@ -216,13 +216,15 @@
                 :before-remove="beforeRemove"
                 :on-success="handleSuccess"
                 multiple
-                :limit="1"
+                :limit="3"
                 accept=".pdf"
                 :on-exceed="handleExceed"
                 :file-list="fileList"
                 style="text-align: left"
               >
-                  <el-button type="primary">项目附件(多个文件请合并成一个pdf)</el-button>
+                <div v-if="this.form.application_id==-1" slot="tip" class="el-upload__tip">最多只能上传3份PDF文件</div>
+                <div v-if="this.form.application_id!==-1" slot="tip" class="el-upload__tip">新上传的材料将会覆盖原有的申请材料</div>
+                  <el-button type="primary">项目附件</el-button>
               </el-upload>
             </el-col>
           </el-form-item>
@@ -241,6 +243,7 @@
 <script>
 import {submit,update} from "@/api/application";
 import axios from "axios";
+import {Preview} from "@/api/download";
 
 export default {
   name: "apply_program_test",
@@ -253,7 +256,6 @@ export default {
     else {
       this.getProjectInfo();
     }
-    console.log(this.form.application_id)
   },
   watch: {
     Watch_project_type(val) {
@@ -299,10 +301,10 @@ export default {
     return {
       applicationType: ['文章', '项目', '其他'],
       application_type: [],
-      fileList: [],
       disable_type_input: true,
       project_typeE: "",
       watch_project_type: "",
+      fileList: [],
       form: {
         institution: localStorage.getItem("institution"),
         name: "",
@@ -318,9 +320,9 @@ export default {
         temp: [],
         project_type: "",
         desc: "",
-        application_file: "",
         apply:-1,
         application_id:-1,
+        application_pdfs: [],
       },
     };
   },
@@ -342,7 +344,9 @@ export default {
             this.form.name = res.data.data.name;
             this.form.project_direction = res.data.data.direction;
             this.form.project_abstract = res.data.data.projectAbstract;
-            this.form.application_file = res.data.data.applicationFile;
+            this.form.application_pdfs.push(res.data.data.applicationPdf1);
+            this.form.application_pdfs.push(res.data.data.applicationPdf2);
+            this.form.application_pdfs.push(res.data.data.applicationPdf3);
           } else this.$message.error(res.data.message);
         })
         .catch((err) => {
@@ -385,22 +389,20 @@ export default {
       localStorage.setItem("phone", this.form.phone);
     },
     handleSuccess(response, file, fileList) {
-      if(response.code===400){
-        this.$message.error(response.message);
+      if(response.code===400) {
         this.$refs['uploadPDF'].clearFiles();
-        return;
+        return this.$message.error(response.message);
       }
-      this.form.application_file = response.data;
     },
     handleRemove(file, fileList) {
-      this.form.application_file = null;
+      return this.$message.info("已移除"+file.name);
     },
     handlePreview(file) {
-      console.log(file.name);
+      Preview(file.response.data);
     },
     handleExceed(files, fileList) {
       this.$message.warning(
-        `当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
           files.length + fileList.length
         } 个文件`
       );
@@ -410,9 +412,15 @@ export default {
     },
     Submit: function () {
       this.saveInfo();
-      if (this.form.application_file === "") {
+      if (this.$refs['uploadPDF'].uploadFiles.length === 0) {
         this.$message.error('您忘记上传文件了!');
         return;
+      }
+      this.$refs['uploadPDF'].uploadFiles.forEach(file =>{
+        this.form.application_pdfs.push(file.response.data)
+      })
+      while(this.form.application_pdfs.length < 3){
+        this.form.application_pdfs.push("")
       }
       switch (this.application_type[0]) {
         case '文章':
@@ -443,9 +451,17 @@ export default {
     },
     Update: function (){
       this.saveInfo();
-      if (this.form.application_file === "") {
-        this.$message.error('您忘记上传文件了!');
-        return;
+      if (this.$refs['uploadPDF'].uploadFiles.length === 0) {
+        this.$message.info('您没有更新附件！');
+      }else{
+        this.$message.info('您上传的新附件已经覆盖了旧附件！');
+        this.form.application_pdfs = []
+        this.$refs['uploadPDF'].uploadFiles.forEach(file =>{
+          this.form.application_pdfs.push(file.response.data)
+        })
+      }
+      while(this.form.application_pdfs.length < 3){
+        this.form.application_pdfs.push("")
       }
       switch (this.application_type[0]) {
         case '文章':
