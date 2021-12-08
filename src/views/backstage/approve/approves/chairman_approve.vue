@@ -27,7 +27,7 @@
             <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!=='none'">
               <span>{{ props.row.leaderAgent }}</span>
             </el-form-item>
-            <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!=='none'">
+            <el-form-item label="系统管理员经办人" v-if="props.row.chairmanAgent!=='none'">
               <span>{{ props.row.chairmanAgent }}</span>
             </el-form-item>
             <br />
@@ -92,7 +92,7 @@
                   @click="download(props.row.applicationPdf)"
                   >下载PDF</el-button
                 >
-                <div v-if="props.row.status !== '委员长终审'">
+                <div v-if="props.row.status !== '系统管理员终审'">
                   <el-button
                     :disabled="props.row.executeInfo === ''"
                     size="mini"
@@ -144,7 +144,7 @@
               </template>
             </el-form-item>
             <br />
-            <el-form-item v-if="props.row.status === '委员长终审'">
+            <el-form-item v-if="props.row.status === '系统管理员终审'">
               <!--按钮，无名称-->
               <template slot-scope="scope">
                 <el-button

@@ -35,7 +35,7 @@ export default {
     const identities = JSON.parse(localStorage.getItem('identity'));
     if (identities.includes('学院秘书'))this.disableSecretary=false;
     if (identities.includes('部门领导'))this.disableLeader=false;
-    if (identities.includes('委员长'))this.disableChairman=false;
+    if (identities.includes('系统管理员'))this.disableChairman=false;
     if (identities.includes('委员'))this.disableMember=false;
   },
   methods: {

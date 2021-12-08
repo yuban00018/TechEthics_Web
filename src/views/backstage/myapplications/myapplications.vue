@@ -32,7 +32,7 @@
               <el-form-item label="部门领导经办人" v-if="props.row.leaderAgent!=='none'">
                 <span>{{ props.row.leaderAgent }}</span>
               </el-form-item>
-              <el-form-item label="委员长经办人" v-if="props.row.chairmanAgent!=='none'">
+              <el-form-item label="系统管理员经办人" v-if="props.row.chairmanAgent!=='none'">
                 <span>{{ props.row.chairmanAgent }}</span>
               </el-form-item>
               <br />

@@ -45,8 +45,8 @@
         <template slot="label"><i class="el-icon-user"></i>部门领导经办人</template>
         {{details.leaderAgent}}
       </el-descriptions-item>
-        <el-descriptions-item label="委员长经办人">
-        <template slot="label"><i class="el-icon-user"></i>委员长经办人</template>
+        <el-descriptions-item label="系统管理员经办人">
+        <template slot="label"><i class="el-icon-user"></i>系统管理员经办人</template>
         {{details.chairmanAgent}}
       </el-descriptions-item>
         <el-descriptions-item v-for="member in details.memberResList" :key="member.userId" label="委员经办人">
