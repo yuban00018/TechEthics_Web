@@ -124,7 +124,8 @@
                 props.row.status === '执行情况表与总结待审核' ||
                 props.row.status === '执行情况表待审核' ||
                 props.row.status === '跟踪情况表待审核' ||
-                props.row.status === '伦理工作总结待审核'
+                props.row.status === '伦理工作总结待审核'||
+                props.row.status === '委员驳回修改'
               "
             >
               <!--按钮，无名称-->
@@ -138,8 +139,8 @@
                 <el-button
                   size="mini"
                   type="danger"
-                  @click="confirm(props.row.id, -1)"
-                  >驳回</el-button
+                  @click="confirm(props.row.id, 0)"
+                  >驳回修改</el-button
                 >
               </template>
             </el-form-item>
@@ -281,7 +282,7 @@ export default {
       }
     },
     approvalTrack: function (applicationId, method) {
-      if (this.textarea === "" && method === -1) {
+      if (this.textarea === "" && method === 0) {
         this.$message.error("未填写驳回原因");
         return;
       }
