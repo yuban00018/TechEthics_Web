@@ -1,9 +1,26 @@
 <template>
   <div>
     <detail :visible.sync="dialogVisible" :details="dialogDetail"></detail>
-    <el-table
+    <el-main>
+      <el-row>
+        <el-col :span="3" :offset="19">
+          <el-select v-model="chosenStatus" filterable placeholder="请选择">
+        <el-option
+          v-for="item in statusList"
+          :key="item.value"
+          :label="item.text"
+          :value="item.value">
+        </el-option>
+      </el-select>
+        </el-col>
+        <el-col :span="2">
+          <el-button type="primary" @click="handleStatusFilter">筛选</el-button>
+        </el-col>
+      </el-row>
+      <br>
+      <el-table
         v-loading="listLoading"
-        :data="projectList.userApplicationList"
+        :data="currentPageData"
         border
         fit
         highlight-current-row
@@ -32,27 +49,45 @@
           </template>
         </el-table-column>
       </el-table>
+    </el-main>
+    <br>
+    <div class="block">
+      <el-pagination
+        :hide-on-single-page=true
+        :page-size="pageSize"
+        background
+        layout="prev, pager, next"
+        :total="totalLength"
+        @current-change="handleCurrentChange">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
-import {getList,getDetail} from "@/api/applications";
+import {getList, getDetail, getProgressList} from "@/api/applications";
 import Detail from "./detail";
 
 export default {
   name: "applications",
   components: {Detail},
   computed: {
-    Watch_project_type() {
-      return this.watch_project_type;
-    },
+    currentPageData(){
+      return this.ApplicationList.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize);
+    }
   },
   data() {
     return {
-      projectList: {userApplicationList: null},
+      totalLength: 0,
+      currentPage: 1,
+      pageSize: 11,
+      originalList: [{"id":0,"ordernum":"","name":"","userId":"","creationTime":"","beginTime":"","type":"","status":""}],
+      ApplicationList: [{"id":0,"ordernum":"","name":"","userId":"","creationTime":"","beginTime":"","type":"","status":""}],
       listLoading: true,
       dialogVisible: false,
       dialogDetail:[],
+      statusList:[],
+      chosenStatus:"",
     };
   },
   mounted() {
@@ -67,11 +102,21 @@ export default {
             this.listLoading = false;
           }
           else if(res.data.code===200){
-            this.projectList = res.data.data;
+            this.ApplicationList = res.data.data.userApplicationList;
+            this.totalLength = res.data.data.totalNum;
+            this.originalList = this.ApplicationList;
             this.listLoading = false;
+            this.currentPage = 1;
           }
       })
         .catch((err) => {this.$message.error(err);});
+      getProgressList().then(res=>{
+        if(res.data.code===200){
+          res.data.data.forEach(item=>{
+            if(item!=="") this.statusList.push({text:item,value:item});
+          })
+        }
+      }).catch((err)=>{this.$message.error(err);});
     },
     show_details(row){
       this.listLoading = true
@@ -117,6 +162,20 @@ export default {
           this.listLoading = false;
       })
         .catch((err) => {this.$message.error(err);});
+    },
+    handleCurrentChange(currentPage){
+      this.currentPage=currentPage;
+    },
+    handleStatusFilter(){
+      let newList = []
+      this.originalList.forEach(item=>{
+        if(item.status===this.chosenStatus){
+          newList.push(item)
+        }
+      })
+      this.ApplicationList = newList;
+      this.totalLength = this.ApplicationList.length;
+      this.currentPage = 1;
     }
   }
 }
