@@ -119,17 +119,8 @@
           <el-button type="text" @click="download(details.trackFile)">下载</el-button>
         </el-descriptions-item>
       </el-descriptions>
-
-      <!--后跟踪文件-->
-      <el-button
-        v-if="details.trackFile !== null"
-        size="mini"
-        type="primary"
-        @click="download(details.trackFile)"
-      >下载后跟踪文件</el-button
-      >
-
       <br>
+      <div id="后跟踪管理按钮">
       <div v-if="details.status === '确认项目状态' || details.status === '暂未立项'">
         <el-select
           size="mini"
@@ -312,6 +303,7 @@
             @click="trackManagement(details.id)"
           >确认上传</el-button
           >
+      </div>
       </div>
     </el-dialog>
   </div>

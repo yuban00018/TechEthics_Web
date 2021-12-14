@@ -65,7 +65,8 @@
 </template>
 
 <script>
-import {getList, getDetail, getProgressList} from "@/api/applications";
+import {getList, getDetail} from "@/api/applications";
+import {getProgressList} from "@/api/const_info"
 import Detail from "./detail";
 
 export default {
@@ -82,7 +83,7 @@ export default {
       currentPage: 1,
       pageSize: 11,
       originalList: [{"id":0,"ordernum":"","name":"","userId":"","creationTime":"","beginTime":"","type":"","status":""}],
-      ApplicationList: [{"id":0,"ordernum":"","name":"","userId":"","creationTime":"","beginTime":"","type":"","status":""}],
+      ApplicationList: [],
       listLoading: true,
       dialogVisible: false,
       dialogDetail:[],
@@ -112,6 +113,7 @@ export default {
         .catch((err) => {this.$message.error(err);});
       getProgressList().then(res=>{
         if(res.data.code===200){
+          this.statusList = []
           res.data.data.forEach(item=>{
             if(item!=="") this.statusList.push({text:item,value:item});
           })
@@ -146,7 +148,6 @@ export default {
             applicationPdfs.push(res.data.data.applicationPdf3);
           row.application_pdfs = []
           applicationPdfs.forEach(pdf=>{
-            console.log(pdf.slice(pdf.search("---") + 3));
             row.application_pdfs.push({'name':pdf.slice(pdf.search("---") + 3),'url':pdf});
           })
           row.rejectReason = res.data.data.rejectReason;
