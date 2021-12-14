@@ -50,22 +50,22 @@ export default new Router({
         children: [{
           path:'member_approve',
           name:'member_approve',
-          component:resolve=>require(['@/views/backstage/approve/approves/member_approve'],resolve)
+          component:resolve=>require(['@/views/backstage/approve/approves/member_table'],resolve)
         },
         {
           path:'chairman_approve',
           name:'chairman_approve',
-          component:resolve=>require(['@/views/backstage/approve/approves/chairman_approve'],resolve)
+          component:resolve=>require(['@/views/backstage/approve/approves/chairman_table'],resolve)
         },
         {
           path:'leader_approve',
           name:'leader_approve',
-          component:resolve=>require(['@/views/backstage/approve/approves/leader_approve'],resolve)
+          component:resolve=>require(['@/views/backstage/approve/approves/leader_table'],resolve)
         },
         {
           path:'secretary_approve',
           name:'secretary_approve',
-          component:resolve=>require(['@/views/backstage/approve/approves/secretary_approve'],resolve)
+          component:resolve=>require(['@/views/backstage/approve/approves/secretary_table'],resolve)
         },
       ]
       },

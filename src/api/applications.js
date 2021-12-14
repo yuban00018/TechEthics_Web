@@ -13,10 +13,3 @@ export function getDetail(row){
     data: {},
   })
 }
-
-export function getProgressList(){
-  return axios({
-    method:'GET',
-    url:"/const/progressList",
-  })
-}
