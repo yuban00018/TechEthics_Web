@@ -277,7 +277,11 @@ export default {
         })
         }
       )
-      this.load();
+      this.$message({
+        message: '成功',
+        type: 'success'
+      });
+      location.reload();
     },
     multiAssign(){
       this.chosenList.forEach(item=>{
@@ -293,7 +297,11 @@ export default {
         })
       })
       this.dialogTableVisible = false;
-      this.load();
+      this.$message({
+        message: '成功',
+        type: 'success'
+      });
+      location.reload();
       },
     loadMemberList(){
       axios({

@@ -357,11 +357,6 @@ export default {
     };
   },
   methods: {
-    load(){
-      this.ExecuteInfo = ""
-      this.summary = ""
-      this.dialog_visible=false;
-    },
     preview(url){
       Preview(url);
     },
@@ -380,7 +375,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     othersProcessManagement(id) {
       otherManagement(id,this.ExecuteInfo,this.summary)
@@ -395,7 +390,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     articleProcessManagement(id) {
       if (this.ExecuteInfo === "") {
@@ -413,7 +408,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     trackManagement(id) {
       Track(this.trackFile,id).then((res) => {
@@ -427,7 +422,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     confirmStatus(id) {
       Confirm(id,this.value).then((res) => {
@@ -443,7 +438,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     download(url) {
       Download(url);
@@ -459,7 +454,7 @@ export default {
       }).catch((err) => {
           this.$message.error(err);
       });
-      this.load();
+      location.reload();
     },
     del(id){
       Delete(id).then((res) => {
@@ -473,14 +468,14 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     modify(id) {
       this.$router.replace({ path: 'application', query: { applicationId: id }})
         .catch((err) => {
         this.$message.error(err);
         });
-      this.load();
+      location.reload();
     },
     uploadTrackFile(response, file, fileList) {
       this.trackFile = response.data;
