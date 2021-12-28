@@ -1,11 +1,11 @@
 import axios from "axios";
-export function login(password,userId){
+export function login(code,url){
   return axios({
             method: "POST",
             url: "/login",
             data: {
-              password: password,
-              userId: userId,
+              code: code,
+              url: url,
             },
           })
 }

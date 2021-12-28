@@ -24,6 +24,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'SHULogin',
+      component: resolve=>require(['@/views/login/oauth'],resolve)
+    },
+    {
+      path: '/login',
       name: 'login',
       component: resolve=>require(['@/views/login/login'],resolve)
     },
