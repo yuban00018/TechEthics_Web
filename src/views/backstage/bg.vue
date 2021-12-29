@@ -36,6 +36,10 @@
         <i class="el-icon-s-check"></i>
         <span @click="jmp('approve')" slot="title">项目审批</span>
       </el-menu-item>
+      <el-menu-item @click="jmp('permissionAssignment')" v-if="!hideAssign" index="4">
+        <i class="el-icon-s-check"></i>
+        <span @click="jmp('permissionAssignment')" slot="title">权限分配</span>
+      </el-menu-item>
     </el-menu>
     </div>
     <div class="content">
@@ -54,6 +58,7 @@ export default {
       changeInfoDialogVisible: false,
       infoForm: { email: "", fax: "", mobilePhone: "", officePhone: "" },
       hideApprove:true,
+      hideAssign:true,
     };
   },
   mounted() {
@@ -62,6 +67,7 @@ export default {
     if (
       !identities.includes("普通用户")
      ) this.hideApprove = false;
+    if(identities.includes("系统管理员")) this.hideAssign = false;
   },
   methods: {
     handleOpen(key, keyPath) {

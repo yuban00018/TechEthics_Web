@@ -33,6 +33,11 @@ export default new Router({
       component: resolve=>require(['@/views/backstage/bg'],resolve),
       redirect:{name:'tutorial'},
       children: [
+        {
+          path: 'permissionAssignment',
+          name: 'permissionAssignment',
+          component: resolve=>require(['@/views/backstage/permissionAssignment/permissionAssignment'],resolve)
+        },
       {
         path: 'tutorial',
         name:'tutorial',
