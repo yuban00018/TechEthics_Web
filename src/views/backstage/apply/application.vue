@@ -1,5 +1,5 @@
 <template>
-  <div class="bg" >
+  <div class="bg">
     <div>
       <el-form
         ref="form"
@@ -37,12 +37,12 @@
             label="项目类型"
             id="application_type"
           >
-        <el-checkbox-group
-          style="text-align: left"
-          v-model="application_type"
-          :max="1">
-          <el-checkbox border v-for="type in applicationType" :label="type" :key="type">{{type}}</el-checkbox>
-        </el-checkbox-group>
+            <el-checkbox-group
+              style="text-align: left"
+              v-model="application_type"
+              :max="1">
+              <el-checkbox border v-for="type in applicationType" :label="type" :key="type">{{ type }}</el-checkbox>
+            </el-checkbox-group>
           </el-form-item>
         </el-row>
         <!--起止日期-->
@@ -79,21 +79,21 @@
         <el-row>
           <el-form-item label="项目类别" style="text-align: left">
             <el-radio-group v-model="watch_project_type">
-                <el-col :span="20">
-                  <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
-                  <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
-                  <el-radio border label="C.新技术应用" class="apply"></el-radio>
-                  <el-radio border label="D.人体标本收集" class="apply"></el-radio>
-                  <el-radio label="E.其他（请注明）" class="apply"></el-radio>
-                </el-col>
-                <el-col :span="4">
-                  <el-input
-                    @input="change($event)"
-                    :disabled="disable_type_input"
-                    v-model="project_typeE"
-                    id="apply_program_programInput"
-                  ></el-input>
-                </el-col>
+              <el-col :span="20">
+                <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
+                <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
+                <el-radio border label="C.新技术应用" class="apply"></el-radio>
+                <el-radio border label="D.人体标本收集" class="apply"></el-radio>
+                <el-radio label="E.其他（请注明）" class="apply"></el-radio>
+              </el-col>
+              <el-col :span="4">
+                <el-input
+                  @input="change($event)"
+                  :disabled="disable_type_input"
+                  v-model="project_typeE"
+                  id="apply_program_programInput"
+                ></el-input>
+              </el-col>
             </el-radio-group>
           </el-form-item>
         </el-row>
@@ -149,37 +149,12 @@
         <el-row>
           <el-form-item label="经费来源">
             <el-col :span="12">
-              <el-checkbox-group v-model="form.temp" :max="1" style="text-align: left">
-                  <el-checkbox border
-                               label="政府"
-                               name="temp"
-                               class="apply"
-                               @click="fundingSource(0)"
-                  ></el-checkbox>
-                  <el-checkbox  border
-                                label="基金会"
-                                name="temp"
-                                class="apply"
-                                @click="fundingSource(1)"
-                  ></el-checkbox>
-                  <el-checkbox border
-                               label="公司"
-                               name="temp"
-                               class="apply"
-                               @click="fundingSource(2)"
-                  ></el-checkbox>
-                  <el-checkbox border
-                               label="国际组织"
-                               name="temp"
-                               class="apply"
-                               @click="fundingSource(3)"
-                  ></el-checkbox>
-                  <el-checkbox border
-                               label="其他"
-                               name="temp"
-                               class="apply"
-                               @click="fundingSource(4)"
-                  ></el-checkbox>
+              <el-checkbox-group v-model="fundingSourceList" :max="1" style="text-align: left">
+                <el-checkbox border label="政府"></el-checkbox>
+                <el-checkbox border label="基金会"></el-checkbox>
+                <el-checkbox border label="公司"></el-checkbox>
+                <el-checkbox border label="国际组织"></el-checkbox>
+                <el-checkbox border label="其他"></el-checkbox>
               </el-checkbox-group>
             </el-col>
           </el-form-item>
@@ -224,16 +199,18 @@
               >
                 <div v-if="this.form.application_id==-1" slot="tip" class="el-upload__tip">最多只能上传3份PDF文件</div>
                 <div v-if="this.form.application_id!==-1" slot="tip" class="el-upload__tip">新上传的材料将会覆盖原有的申请材料</div>
-                  <el-button type="primary">项目附件</el-button>
+                <el-button type="primary">项目附件</el-button>
               </el-upload>
             </el-col>
           </el-form-item>
         </el-row>
       </el-form>
-      <el-button v-if="this.form.application_id===-1" type="success" @click="Submit" style="position:absolute;left: 160px;"
+      <el-button v-if="this.form.application_id===-1" type="success" @click="Submit"
+                 style="position:absolute;left: 160px;"
       >提交申请
       </el-button>
-      <el-button v-if="this.form.application_id!==-1" type="warning" @click="Update" style="position:absolute;left: 160px;"
+      <el-button v-if="this.form.application_id!==-1" type="warning" @click="Update"
+                 style="position:absolute;left: 160px;"
       >修改并提交
       </el-button>
     </div>
@@ -241,7 +218,7 @@
 </template>
 
 <script>
-import {submit,update} from "@/api/application";
+import {submit, update} from "@/api/application";
 import axios from "axios";
 import {Preview} from "@/api/download";
 
@@ -249,11 +226,10 @@ export default {
   name: "apply_program_test",
   mounted() {
     this.confirm_notice()
-    this.form.application_id=Number(this.$route.query.applicationId);
-    if(isNaN(Number(this.$route.query.applicationId))){
-      this.form.application_id=-1;
-    }
-    else {
+    this.form.application_id = Number(this.$route.query.applicationId);
+    if (isNaN(Number(this.$route.query.applicationId))) {
+      this.form.application_id = -1;
+    } else {
       this.getProjectInfo();
     }
   },
@@ -305,6 +281,7 @@ export default {
       project_typeE: "",
       watch_project_type: "",
       fileList: [],
+      fundingSourceList: [],
       form: {
         institution: localStorage.getItem("institution"),
         name: "",
@@ -317,17 +294,16 @@ export default {
         project_direction: "",
         project_abstract: "",
         type: 0,//这个是funding source但我不知道为什么被命名为type了，请千万注意！！！
-        temp: [],
         project_type: "",
         desc: "",
-        apply:-1,
-        application_id:-1,
+        apply: -1,
+        application_id: -1,
         application_pdfs: [],
-      },
+      }
     };
   },
   methods: {
-    handleError(){
+    handleError() {
       this.$message.error(
         '上传失败，请检查网络'
       );
@@ -389,13 +365,13 @@ export default {
       localStorage.setItem("phone", this.form.phone);
     },
     handleSuccess(response, file, fileList) {
-      if(response.code===400) {
+      if (response.code === 400) {
         this.$refs['uploadPDF'].clearFiles();
         return this.$message.error(response.message);
       }
     },
     handleRemove(file, fileList) {
-      return this.$message.info("已移除"+file.name);
+      return this.$message.info("已移除" + file.name);
     },
     handlePreview(file) {
       Preview(file.response.data);
@@ -416,11 +392,28 @@ export default {
         this.$message.error('您忘记上传文件了!');
         return;
       }
-      this.$refs['uploadPDF'].uploadFiles.forEach(file =>{
+      this.$refs['uploadPDF'].uploadFiles.forEach(file => {
         this.form.application_pdfs.push(file.response.data)
       })
-      while(this.form.application_pdfs.length < 3){
+      while (this.form.application_pdfs.length < 3) {
         this.form.application_pdfs.push("")
+      }
+      switch (this.fundingSourceList[0]) {
+        case '政府':
+          this.form.type = 0
+          break;
+        case '基金会':
+          this.form.type = 1
+          break;
+        case '公司':
+          this.form.type = 2
+          break;
+        case '国际组织':
+          this.form.type = 3
+          break;
+        case '其他':
+          this.form.type = 4
+          break;
       }
       switch (this.application_type[0]) {
         case '文章':
@@ -434,34 +427,51 @@ export default {
           break;
       }
       submit(this.form).then(res => {
-          if (res.data.code === 200) {
-            this.saveInfo();
-            this.$message({
-              message: '成功，请在我的申请中提交项目',
-              type: 'success'
-            });
-            this.$router.replace("/backstage/applications").catch((err) => {
-              this.$message.error(err);
-            });
-          } else this.$message.error(res.data.message);
-        })
+        if (res.data.code === 200) {
+          this.saveInfo();
+          this.$message({
+            message: '成功，请在我的申请中提交项目',
+            type: 'success'
+          });
+          this.$router.replace("/backstage/applications").catch((err) => {
+            this.$message.error(err);
+          });
+        } else this.$message.error(res.data.message);
+      })
         .catch((err) => {
           this.$message.error(err);
         });
     },
-    Update: function (){
+    Update: function () {
       this.saveInfo();
       if (this.$refs['uploadPDF'].uploadFiles.length === 0) {
         this.$message.info('您没有更新附件！');
-      }else{
+      } else {
         this.$message.info('您上传的新附件已经覆盖了旧附件！');
         this.form.application_pdfs = []
-        this.$refs['uploadPDF'].uploadFiles.forEach(file =>{
+        this.$refs['uploadPDF'].uploadFiles.forEach(file => {
           this.form.application_pdfs.push(file.response.data)
         })
       }
-      while(this.form.application_pdfs.length < 3){
+      while (this.form.application_pdfs.length < 3) {
         this.form.application_pdfs.push("")
+      }
+      switch (this.fundingSourceList[0]) {
+        case '政府':
+          this.form.type = 0
+          break;
+        case '基金会':
+          this.form.type = 1
+          break;
+        case '公司':
+          this.form.type = 2
+          break;
+        case '国际组织':
+          this.form.type = 3
+          break;
+        case '其他':
+          this.form.type = 4
+          break;
       }
       switch (this.application_type[0]) {
         case '文章':
@@ -489,9 +499,6 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-    },
-    fundingSource: function (choice) {
-      this.form.type = choice;
     },
   }
 }
