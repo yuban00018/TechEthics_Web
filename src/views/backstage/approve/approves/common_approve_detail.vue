@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!--visible：能不能显示-->
+    <!--.sync：表示是否是双向绑定，例如关闭当前显示，则让绑定数据改为0-->
     <el-dialog
       :title='details.name'
       :visible.sync="dialog_visible"
@@ -115,9 +117,13 @@
 import {Download, Preview} from "@/api/download.js";
 import {Reject} from "@/api/approves.js";
 export default {
+  // props：用来接收父组件传给子组件的数据
   props:['visible','details','approve_type'],
+  // name：给组件命名
   name:"detail",
   watch:{
+    // watch是vue内部提供的一个用于侦听功能的更通用的方法，其用来响应数据的变化，通过特定的数据变化驱动一些操作
+    // 当变量visible产生变化时，会被页面侦听到并执行相关的操作
     visible(val) {
       this.reject_reason = "";
       this.dialog_visible = val;
