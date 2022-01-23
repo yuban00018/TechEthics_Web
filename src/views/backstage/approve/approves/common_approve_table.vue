@@ -153,6 +153,7 @@ import { getDetail } from "@/api/applications";
 import { getProgressList } from "@/api/const_info";
 import { Approve, Assign, LoadList } from "@/api/approves";
 import commonDetail from "@/views/backstage/approve/approves/common_approve_detail";
+import {getMemberList} from "../../../../api/member_list";
 import axios from "axios";
 
 export default {
@@ -305,6 +306,7 @@ export default {
     },
     // 批量批准当前选中的申请
     multiApprove(){
+      console.log(666);
       this.chosenList.forEach(item=>{
         Approve(this.approve_type,item.id).then(res=>{
           if (res.data.code !== 200) {
@@ -322,7 +324,8 @@ export default {
         message: '成功',
         type: 'success'
       });
-      location.reload();
+      this.reload();
+      // location.reload();
     },
     // 对选定的申请进行批量分配选定的委员的操作
     multiAssign(){
@@ -343,15 +346,12 @@ export default {
         message: '成功',
         type: 'success'
       });
-      location.reload();
+      this.reload();
+      // location.reload();
       },
     // 获取当前所有的委员列表，并展示委员列表的table
     loadMemberList(){
-      axios({
-        url: "/chairman/memberList",
-        method: "get",
-      })
-        .then((res) => {
+      getMemberList().then((res) => {
           if (res.data.code === 200) {
             this.dialogTableVisible=true;
             this.memberList = res.data;
@@ -362,11 +362,15 @@ export default {
           this.$message.error(err);
         });
     },
+    reload: function (){
+      var {search,href} = window.location;
+      href = href.replace(/&?t_reload=(\d+)/g,'')
+      window.location.href = href+(search?'&':'?')+"t_reload="+new Date().getTime()
+    }
   }
 }
 </script>
 
 <style scoped>
 </style>
-
 <!--疑惑12：为什么一开始的时候不会展示整个申请页面呢？-->

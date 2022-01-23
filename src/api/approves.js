@@ -57,6 +57,16 @@ export function Approve(type,id){
         state: 1
       }
     })
+  } else {
+    return axios({
+      method: "post",
+      url: "/chairman/approvalTrack",
+      data: {
+        applicationId: id,
+        rejectReason: "",
+        state: 1
+      }
+    })
   }
 }
 

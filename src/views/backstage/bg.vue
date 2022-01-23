@@ -40,6 +40,10 @@
         <i class="el-icon-s-check"></i>
         <span @click="jmp('permissionAssignment')" slot="title">权限分配</span>
       </el-menu-item>
+      <!--<el-menu-item @click="jmp('myapplications/consent')" v-if="!hideAssign" index="4">-->
+      <!--  <i class="el-icon-user"></i>-->
+      <!--  <span @click="jmp('myapplications/consent')" slot="title">审查同意书</span>-->
+      <!--</el-menu-item>-->
     </el-menu>
     </div>
     <div class="content">

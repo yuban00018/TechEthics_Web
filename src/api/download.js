@@ -35,7 +35,6 @@ export function Download(url) {
   }
 
 // export function xx() {}：指定模块的输出，通过import {xx} from 'xxxx'读入
-// 疑惑2: 预览该url对应的文件？
 export function Preview(url){
   if (url === "" || url == null) {
     Message.error("请在点击提交后重试");
@@ -45,7 +44,6 @@ export function Preview(url){
   // encodeURIComponent()：函数可把字符串作为URI组件进行编码，某些字符后台无法读取，因此需要编码一下
   url = encodeURIComponent("http://localhost:8888/api/file/preview?fileAddress="+ url);
   // window.open(url)：用来打开一个新窗口的函数
-  // 疑惑2：viewer.html这是啥，代码是生成的吗？
   window.open("/static/plugins/pdfjs/web/viewer.html?file="+url);
   return;
 }

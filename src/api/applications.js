@@ -15,3 +15,10 @@ export function getDetail(row){
     data: {},
   })
 }
+export function getProjectInfoAPI(applicationId) {
+  return axios({
+    method: "get",
+    url: "/user/applicationInfo?applicationId=" + applicationId,
+    data: {},
+  })
+}
