@@ -154,6 +154,7 @@ export default {
           row.applicationPdf = res.data.data.applicationPdf;
           row.executeInfo = res.data.data.executeInfo;
           row.summary = res.data.data.summary;
+          row.consentPdf = res.data.data.consentPdf;
           row.trackFile = res.data.data.trackFile;
           row.id = res.data.data.id;
           row.memberResList = res.data.data.memberResList;

@@ -119,6 +119,12 @@
           <el-button @click="preview(details.summary)" type="text">预览</el-button>
           <el-button type="text" @click="download(details.summary)">下载</el-button>
         </el-descriptions-item>
+        <el-descriptions-item label="同意书" v-if="details.consentPdf !== null">
+          <template slot="label">同意书</template>
+          上海大学伦理审查同意书.pdf <br>
+          <el-button @click="preview(details.consentPdf)" type="text">预览</el-button>
+          <el-button type="text" @click="download(details.consentPdf)">下载</el-button>
+        </el-descriptions-item>
         <el-descriptions-item label="总结" v-if="details.trackFile !== null">
           <template slot="label">后跟踪文件</template>
           上海大学伦理审查后跟踪文件.pdf <br>

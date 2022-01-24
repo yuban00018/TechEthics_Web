@@ -16,8 +16,8 @@ export function Download(url) {
     }).then((res) => {
         // a标签实现超链接
         var new_element = document.createElement("a");
-        console.log(res)
-        console.log(new_element)
+        // console.log(res)
+        // console.log(new_element)
         new_element.download = res.config.url.slice(res.config.url.search("---") + 3);
         new_element.style.display = "none";
         // Blob类型的对象表示不可变的类似文件对象的原始数据，通俗点说，就是Blob对象是二进制数据，但它是类似文件对象的二进制数据，因此可以像操作File对象一样操作Blob对象，实际上，File继承自Blob
@@ -40,10 +40,10 @@ export function Preview(url){
     Message.error("请在点击提交后重试");
     return;
   }
+  console.log(url);
   url = url.replace(/\\/g,"/");
   // encodeURIComponent()：函数可把字符串作为URI组件进行编码，某些字符后台无法读取，因此需要编码一下
   url = encodeURIComponent("http://localhost:8888/api/file/preview?fileAddress="+ url);
   // window.open(url)：用来打开一个新窗口的函数
   window.open("/static/plugins/pdfjs/web/viewer.html?file="+url);
-  return;
 }

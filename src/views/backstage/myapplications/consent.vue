@@ -200,35 +200,38 @@ export default {
       let application_id = Number(this.$route.query.application_id);
       // console.log(this.applyForm)
       // console.log(application_id)
-      submit(this.applyForm, application_id)
-      .then((res) => {
-        let mark = 1;
-        if (this.status !== 10)
-          mark = 0;
-        else {
-          for (let tmp in this.memberResList)
-            if (this.memberResList[tmp].state !== 1)
-              mark = -1;
-        }
-        if (!mark)
-          this.$message("当前项目进度有误！");
-        else if (mark === -1)
-          this.$message("当前有委员没有批准！");
-        else {
-          if (res.data.code === 200) {
-            this.$message({
-              message: "提交成功",
-              type: "success",
-            });
-          } else {
-            // console.log(application_id);
-            // console.log("寄了");
-            this.$message.error(res.data.message);
-          }
-        }
-      }).catch((err) => {
-        this.$message.error(err);
-      });
+      let mark = 1;
+      console.log("status: ", this.status);
+      if (this.status !== "委员终审")
+        mark = 0;
+      else {
+        for (let tmp in this.memberResList)
+          if (this.memberResList[tmp].state !== 1)
+            mark = -1;
+      }
+      console.log("mark: ", mark);
+      // 特判原因：避免get请求，?application_id=xxx的bug
+      if (!mark)
+        this.$message("当前项目进度有误！");
+      else if (mark === -1)
+        this.$message("当前有委员没有批准！");
+      else {
+        submit(this.applyForm, application_id)
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.$message({
+                message: "提交成功",
+                type: "success",
+              });
+            } else {
+              // console.log(application_id);
+              // console.log("寄了");
+              this.$message.error(res.data.message);
+            }
+          }).catch((err) => {
+          this.$message.error(err);
+        });
+      }
       this.$router.replace("../applications").catch((err) => {
         this.$message.error(err);
       });
@@ -256,7 +259,7 @@ export default {
       getProjectInfoAPI(application_id)
       .then(res => {
         this.status = res.data.data.status;
-        this.memberResList = res.data.data().memberResList;
+        this.memberResList = res.data.data.memberResList;
       })
     }
   }
