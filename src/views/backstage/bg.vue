@@ -137,9 +137,7 @@ export default {
     },
     logout() {
       localStorage.clear();
-      this.$router.push("/").catch((err) => {
-        this.$message.error(err);
-      });
+      window.location.href="https://oauth.shu.edu.cn/oauth/logout?retUrl=http://10.10.10.81&redirect_uri=http://10.10.10.81";
     },
   },
 };
