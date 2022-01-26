@@ -24,6 +24,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'SHULogin',
+      component: resolve=>require(['@/views/login/oauth'],resolve)
+    },
+    {
+      path: '/login',
       name: 'login',
       // Vue 路由按需加载(路由懒加载)
       component: resolve=>require(['@/views/login/login'],resolve)
