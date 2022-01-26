@@ -4,13 +4,13 @@
       <el-form
         ref="form"
         :model="form"
-        label-width="160px"
+        label-width="170px"
       >
         <br>
         <!--项目单位-->
         <el-row>
           <el-form-item
-            label="项目单位"
+            label="项目单位："
             class="apply"
             id="apply_program_institution"
           >
@@ -22,7 +22,7 @@
         <!--项目名称-->
         <el-row>
           <el-form-item
-            label="项目名称"
+            label="项目名称："
             class="apply"
             id="apply_program_name"
           >
@@ -34,7 +34,7 @@
         <!--申请类型-->
         <el-row>
           <el-form-item
-            label="项目类型"
+            label="项目类型："
             id="application_type"
           >
             <el-checkbox-group
@@ -47,8 +47,8 @@
         </el-row>
         <!--起止日期-->
         <el-row>
-          <el-form-item label="起止日期（具体到月）" id="apply_program_timeLabel01">
-            <el-col :span="8">
+          <el-form-item label="起止日期(具体到月)" id="apply_program_timeLabel01">
+            <el-col :span="7">
               <el-date-picker
                 type="date"
                 placeholder="开始日期"
@@ -63,7 +63,7 @@
             > 到
             </el-col
             >
-            <el-col :span="8">
+            <el-col :span="7">
               <el-date-picker
                 placeholder="结束日期"
                 v-model="form.time2"
@@ -77,16 +77,16 @@
         </el-row>
         <!--项目类别-->
         <el-row>
-          <el-form-item label="项目类别" style="text-align: left">
+          <el-form-item label="项目类别" style="text-align: left" size="medium">
             <el-radio-group v-model="watch_project_type">
-              <el-col :span="20">
+              <el-col :span="30">
                 <el-radio border label="A.新药物临床实验" class="apply"></el-radio>
                 <el-radio border label="B.新器械临床实验" class="apply"></el-radio>
                 <el-radio border label="C.新技术应用" class="apply"></el-radio>
                 <el-radio border label="D.人体标本收集" class="apply"></el-radio>
                 <el-radio label="E.其他（请注明）" class="apply"></el-radio>
               </el-col>
-              <el-col :span="4">
+              <el-col :span="3">
                 <el-input
                   @input="change($event)"
                   :disabled="disable_type_input"
@@ -100,7 +100,7 @@
         <!--办公电话-->
         <el-row>
           <el-form-item
-            label="办公电话"
+            label="办公电话："
             class="apply"
             id="apply_program_office_phone"
           >
@@ -111,7 +111,7 @@
         </el-row>
         <!--传真-->
         <el-row>
-          <el-form-item label="传真" class="apply" id="apply_program_fax">
+          <el-form-item label="传真：" class="apply" id="apply_program_fax">
             <el-col :span="6">
               <el-input v-model="form.fax"></el-input>
             </el-col>
@@ -119,7 +119,7 @@
         </el-row>
         <!--手机-->
         <el-row>
-          <el-form-item label="手机" class="apply" id="apply_program_phone">
+          <el-form-item label="手机：" class="apply" id="apply_program_phone">
             <el-col :span="6">
               <el-input v-model="form.phone"></el-input>
             </el-col>
@@ -127,7 +127,7 @@
         </el-row>
         <!--邮箱-->
         <el-row>
-          <el-form-item label="电子邮箱" class="apply" id="apply_program_email">
+          <el-form-item label="电子邮箱：" class="apply" id="apply_program_email">
             <el-col :span="6">
               <el-input v-model="form.email"></el-input>
             </el-col>
@@ -136,7 +136,7 @@
         <!--研究方向-->
         <el-row>
           <el-form-item
-            label="目前主要研究方向"
+            label="目前主要研究方向："
             class="apply"
             id="apply_program_project_direction"
           >
@@ -147,7 +147,7 @@
         </el-row>
         <!--经费来源-->
         <el-row>
-          <el-form-item label="经费来源">
+          <el-form-item label="经费来源：">
             <el-col :span="12">
               <el-checkbox-group v-model="fundingSourceList" :max="1" style="text-align: left">
                 <el-checkbox border label="政府"></el-checkbox>
@@ -178,7 +178,7 @@
         </el-row>
         <!--附件上传-->
         <el-row>
-          <el-form-item label="附件上传">
+          <el-form-item label="附件上传：">
             <el-col :span="4">
               <el-upload
                 ref="uploadPDF"
@@ -197,7 +197,7 @@
                 :file-list="fileList"
                 style="text-align: left"
               >
-                <div v-if="this.form.application_id==-1" slot="tip" class="el-upload__tip">最多只能上传3份PDF文件</div>
+                <div v-if="this.form.application_id===-1" slot="tip" class="el-upload__tip">最多只能上传3份PDF文件</div>
                 <div v-if="this.form.application_id!==-1" slot="tip" class="el-upload__tip">新上传的材料将会覆盖原有的申请材料</div>
                 <el-button type="primary">项目附件</el-button>
               </el-upload>
@@ -221,11 +221,13 @@
 import {submit, update} from "@/api/application";
 import axios from "axios";
 import {Preview} from "@/api/download";
+import {getProjectInfoAPI} from "../../../api/applications";
 
 export default {
   name: "apply_program_test",
   mounted() {
     this.confirm_notice()
+    // 查询跳转的时候携带的参数
     this.form.application_id = Number(this.$route.query.applicationId);
     if (isNaN(Number(this.$route.query.applicationId))) {
       this.form.application_id = -1;
@@ -309,11 +311,7 @@ export default {
       );
     },
     getProjectInfo() {
-      axios({
-        method: "get",
-        url: "/user/applicationInfo?applicationId=" + this.form.application_id,
-        data: {},
-      })
+      getProjectInfoAPI(this.form.application_id)
         .then((res) => {
           if (res.data.code === 200) {
             this.form.institution = res.data.data.institution;
@@ -427,6 +425,7 @@ export default {
           break;
       }
       submit(this.form).then(res => {
+        // console.log(res.data.code);
         if (res.data.code === 200) {
           this.saveInfo();
           this.$message({

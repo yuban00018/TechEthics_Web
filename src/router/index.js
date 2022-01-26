@@ -30,6 +30,7 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
+      // Vue 路由按需加载(路由懒加载)
       component: resolve=>require(['@/views/login/login'],resolve)
     },
     {
@@ -38,11 +39,11 @@ export default new Router({
       component: resolve=>require(['@/views/backstage/bg'],resolve),
       redirect:{name:'tutorial'},
       children: [
-        {
-          path: 'permissionAssignment',
-          name: 'permissionAssignment',
-          component: resolve=>require(['@/views/backstage/permissionAssignment/permissionAssignment'],resolve)
-        },
+      {
+        path: 'permissionAssignment',
+        name: 'permissionAssignment',
+        component: resolve=>require(['@/views/backstage/permissionAssignment/permissionAssignment'],resolve)
+      },
       {
         path: 'tutorial',
         name:'tutorial',
@@ -57,7 +58,8 @@ export default new Router({
         path: 'approve',
         name:'approve',
         component: resolve=>require(['@/views/backstage/approve/approve'],resolve),
-        children: [{
+        children: [
+        {
           path:'member_approve',
           name:'member_approve',
           component:resolve=>require(['@/views/backstage/approve/approves/member_table'],resolve)
@@ -83,6 +85,11 @@ export default new Router({
         path: 'applications',
         name:'applications',
         component: resolve=>require(['@/views/backstage/myapplications/applications'],resolve)
+      },
+      {
+        path: 'myapplications/consent',
+        name:'myapplications/consent',
+        component: resolve=>require(['@/views/backstage/myapplications/consent'],resolve)
       },
     ]
     },

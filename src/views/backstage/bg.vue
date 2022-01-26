@@ -3,8 +3,8 @@
   <div id="backstage_bg">
     <div id="darkblue_bg">
       <img id="shu_badge" src="@/assets/shu_pic.png"  alt=""/>
-      <div id="info">欢迎: {{information}}</div>
-      <el-button size="mini" @click="logout()" type="primary" id="logoutButton">退出登录</el-button>
+      <div id="info" style="font-size: 105%">欢迎: {{information}}</div>
+      <el-button size="mini" @click="logout()" type="primary" style="font-size: 105%" id="logoutButton" >退出登录</el-button>
     </div>
     <div id="el-sidebar">
     <el-menu
@@ -40,6 +40,10 @@
         <i class="el-icon-s-check"></i>
         <span @click="jmp('permissionAssignment')" slot="title">权限分配</span>
       </el-menu-item>
+      <!--<el-menu-item @click="jmp('myapplications/consent')" v-if="!hideAssign" index="4">-->
+      <!--  <i class="el-icon-user"></i>-->
+      <!--  <span @click="jmp('myapplications/consent')" slot="title">审查同意书</span>-->
+      <!--</el-menu-item>-->
     </el-menu>
     </div>
     <div class="content">
@@ -174,15 +178,12 @@ button#logoutButton {
   z-index: -1;
 }
 #shu_badge {
-  height: 120%;
-  width: 216px;
+  height: 160%;
+  width: 11%;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -30%;
+  left: 0.3%;
   z-index: 2;
-}
-.el-menu--popup {
-width: 200px;
 }
 #el-sidebar{
   bottom: 0;

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 获取当前身份的所有的审批信息
 export function LoadList(type){
   if(type === "secretary"){
     return axios({
@@ -24,6 +25,7 @@ export function LoadList(type){
   }
 }
 
+// type身份批准当前id申请
 export function Approve(type,id){
   if(type === "secretary"){
     return axios({
@@ -49,6 +51,16 @@ export function Approve(type,id){
     return axios({
       method: "post",
       url: "/leader/approval",
+      data: {
+        applicationId: id,
+        rejectReason: "",
+        state: 1
+      }
+    })
+  } else {
+    return axios({
+      method: "post",
+      url: "/chairman/approvalTrack",
       data: {
         applicationId: id,
         rejectReason: "",
@@ -101,7 +113,7 @@ export function Reject(type,id,reason){
     })
   }
 }
-
+// 分配委员函数
 export function Assign(id,member_list){
   return axios({
     method: "post",
