@@ -540,7 +540,7 @@ export default {
         .catch((err) => {
           this.$message.error(err);
         });
-      this.reload();
+      // this.reload();
       // location.reload();
       // location.assign(location);
     },
